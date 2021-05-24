@@ -93,6 +93,7 @@ var config  = {
         log.insertBefore(line, log.firstChild);
         /*  */
         const worker = new Tesseract.createWorker({
+          "workerBlobURL": false,
           "logger": config.app.update,
           "cacheMethod": fromcache ? "write" : "refresh",
           "workerPath": "/data/interface/vendor/worker.min.js",
