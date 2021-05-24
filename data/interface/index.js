@@ -95,9 +95,9 @@ var config  = {
         const worker = new Tesseract.createWorker({
           "workerBlobURL": false,
           "logger": config.app.update,
+          "workerPath": "vendor/worker.min.js",
+          "corePath": "vendor/tesseract-core.wasm.js",
           "cacheMethod": fromcache ? "write" : "refresh",
-          "workerPath": "/data/interface/vendor/worker.min.js",
-          "corePath": "/data/interface/vendor/tesseract-core.wasm.js",
           "langPath": "https://raw.githubusercontent.com/naptha/tessdata/gh-pages/" + accuracy.value
         });
         /*  */
