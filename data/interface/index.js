@@ -13,15 +13,18 @@ var config  = {
   "resize": {
     "timeout": null,
     "method": function () {
-      var context = document.documentElement.getAttribute("context");
-      if (context === "win") {
+      if (config.port.name === "win") {
         if (config.resize.timeout) window.clearTimeout(config.resize.timeout);
-        config.resize.timeout = window.setTimeout(function () {
+        config.resize.timeout = window.setTimeout(async function () {
+          var current = await chrome.windows.getCurrent();
+          /*  */
           config.storage.write("interface.size", {
-            "width": window.innerWidth || window.outerWidth,
-            "height": window.innerHeight || window.outerHeight
+            "top": current.top,
+            "left": current.left,
+            "width": current.width,
+            "height": current.height
           });
-        }, 300);
+        }, 1000);
       }
     }
   },
@@ -39,7 +42,7 @@ var config  = {
             if (document.location.search === "?popup") config.port.name = "popup";
             /*  */
             if (config.port.name === "popup") {
-              document.documentElement.style.width = "750px";
+              document.documentElement.style.width = "780px";
               document.documentElement.style.height = "550px";
             }
             /*  */
@@ -96,7 +99,7 @@ var config  = {
           "workerBlobURL": false,
           "logger": config.app.update,
           "workerPath": "vendor/worker.min.js",
-          "corePath": "vendor/tesseract-core.wasm.js",
+          "corePath": "vendor/tesseract-core.asm.js",
           "cacheMethod": fromcache ? "write" : "refresh",
           "langPath": "https://raw.githubusercontent.com/naptha/tessdata/gh-pages/" + accuracy.value
         });
@@ -210,6 +213,7 @@ var config  = {
     			var div = document.createElement("div");
     			var textarea = document.createElement("textarea");
     			textarea.value = e.data.data.text;
+          div.className = "result";
           div.appendChild(textarea);
           log.insertBefore(div, log.firstChild);
           /*  */
@@ -228,6 +232,10 @@ var load = function () {
   var language = document.querySelector("#language");
   var accuracy = document.querySelector("#accuracy");
   var donation = document.getElementById("donation");
+  /*  */
+  reload.addEventListener("click", function () {
+    document.location.reload();
+  }, false);
   /*  */
   accuracy.addEventListener("change", function (e) {
     config.storage.write("accuracy", e.target.selectedIndex);
@@ -262,12 +270,12 @@ var load = function () {
   /*  */
   config.storage.load(config.app.start);
   window.removeEventListener("load", load, false);
-  reload.addEventListener("click", function (e) {document.location.reload()}, false);
 };
 
 config.port.connect();
 
-window.addEventListener("load", load, false);
 document.addEventListener("drop", config.cancel.drop, true);
-window.addEventListener("resize", config.resize.method, false);
 document.addEventListener("dragover", config.cancel.drop, true);
+
+window.addEventListener("load", load, false);
+window.addEventListener("resize", config.resize.method, false);
