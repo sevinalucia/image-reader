@@ -349,6 +349,10 @@ html[context="popup"] #log {
   min-height: 300px;
 }
 
+html[context="webapp"] .console {
+  height: calc(100vh - 265px);
+}
+
 html[context="webapp"] .toolbar {
   display: none;
 }
