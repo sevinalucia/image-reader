@@ -1,7 +1,3 @@
-.aaa {
-  background: red;
-}
-
 body {
   border: 0;
   padding: 0;
@@ -42,7 +38,7 @@ progress[value='1'] {
 
 select {
   width: 100%;
-  color: #555;
+  color: #333;
   height: 100%;
   cursor: pointer;
   vertical-align: middle;
@@ -51,8 +47,8 @@ select {
 
 input[type='file'] {
   width: 100%;
-  color: #555;
-  padding: 5px;
+  color: #333;
+  padding: 10px;
   height: 120px;
   outline: none;
   font-size: 12px;
@@ -63,7 +59,7 @@ input[type='file'] {
 }
 
 button {
-  color: #555;
+  color: #333;
   width: 120px;
   height: 32px;
   outline: none;
@@ -74,7 +70,7 @@ button {
 }
 
 p {
-  color: #555;
+  color: #333;
   padding: 0 10px;
   font-size: 12px;
   margin: 5px auto;
@@ -90,12 +86,12 @@ a {
   color: #fff;
   height: 32px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 32px;
   position: absolute;
   text-align: center;
-  background: #808080;
+  background: #4ca54c;
   border-radius: 100%;
   text-decoration: none;
   font-family: monospace;
@@ -141,7 +137,7 @@ input[type='button']:hover {
   margin: 0;
   border: 0;
   bottom: 0;
-  color: #555;
+  color: #333;
   z-index: 11;
   width: 100%;
   display: none;
@@ -166,13 +162,13 @@ input[type='button']:hover {
   padding: 0;
   position: relative;
   border: solid 1px rgba(0,0,0,0.1);
-  background: #fbfbfb url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAPYQAAD2EBqD+naQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAIvSURBVHic7d2xLgRRGEfx79oRvRCFjgQVkn0QNJ5EIRGyhda7SDyHUiOhYAsiNqEk66psqGTEdUfO+XWT7Jf8i5NMscVESOJKtQeUNhjEVLO5vNj2rnnJz/u7108lNnVJU3tAcf2V2Twe37Q9e51JJxGxV2BRp0zVHqC6DADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4AwAzgDgDADOAOAMAM4A4CafjTs+Xd7JEQc1xxSRUhM5b7S/i/vIMSywqKqcY3i0c7X98Tz5bNxbjvmUol9nVkE5//AuFiJi4Ve3dEBKefbzs68AOAOAMwA4A4AzADgDgDMAOAOAMwA4A4AzALjJfwEppVFEvqg5poScUi/lvPaD08eIuPvtPfWl2y9PtWb8lcHZylxvPH5ofZji5HDraq/ApE7xFQBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYAZwBwBgBnAHAGAGcAcAYA13z/k3/u/HLUW19abXv2Mt2MSsyRpO54BxisNnYwXujbAAAAAElFTkSuQmCC") no-repeat center center;
+  background: #fbfbfb url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAACk2AAApNgHc42JBAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAG1JREFUWIVj/P//PwOpwHeZ71cGBgYuNOGvm6M285BqFhPJtlMZjDpg1AGjDhh1wKgDBtwBjD5Lfb6SoQ+9IoKBb6QaxILHMHIAyWYNeBSMOoCFgYyEw0DFRMg42iQbdcCoA0YdMOqAUQcMtAMAH6AVeLZnZIgAAAAASUVORK5CYII=') no-repeat center center;
   background-size: 16px;
 }
 
 .fileio .info {
   left: 10px;
-  color: #555;
+  color: #333;
   bottom: 10px;
   font-size: 12px;
   user-select: none;
@@ -225,28 +221,29 @@ input[type='button']:hover {
   position: relative;
   height: calc(100vh - 260px);
   border: 1px solid rgba(0,0,0,0.1);
-  background: #fff url("../icons/48.png") no-repeat 50% 80%;
+  background: #fff url('../icons/48.png') no-repeat 50% 80%;
   background-size: 48px;
 }
 
 .console textarea {
+  width: 100%;
+  color: #333;
   margin: 5px;
-  color: #555;
   padding: 10px;
-  height: 250px;
+  height: 100vh;
   outline: none;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 24px;
   overflow-y: scroll;
   font-family: monospace;
   box-sizing: border-box;
-  width: calc(100% - 10px);
   border: solid 1px #86b229;
+  max-height: calc(100vh - 313px);
 }
 
 .console > div {
   padding: 0;
-  color: #555;
+  color: #333;
   margin: 3px;
   height: 32px;
   font-size: 12px;
@@ -279,11 +276,10 @@ input[type='button']:hover {
 
 .select select {
   margin: 0;
-  color: #555;
+  color: #333;
   height: 48px;
   outline: none;
   font-size: 12px;
-  overflow: hidden;
   appearance: none;
   text-indent: 10px;
   white-space: nowrap;
@@ -292,6 +288,7 @@ input[type='button']:hover {
   font-family: monospace;
   text-overflow: ellipsis;
   background-color: #fbfbfb;
+  overflow: hidden !important;
   border: 1px solid rgba(0,0,0,0.1);
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxMAAAsTAQCanBgAAAHWSURBVFhH7ZY/TsMwFMZjZ0QM3KCiMEXiCnCDqv9WpooToIqt6sgZ6ITYWtELAEIsDDCjdkBwARATA1Vivs+JqzSyoaVtFvJJr7bfs/Pzv5fGK1SoUKfTkUmVpUhM+/KIiUajUUblMAzDPaXUhg55noJxkCnTWjomhPj0ff8ezEtRr9fbcJzqLjkriqITbsNW3MxfWPimxM9X0s5dYIdyMplcYCtuEl9uAvMWxbk/Ho/fgyB4hCPAjEpxeL0iXErZGgwGL7LZbPqoPOFGHiWzWqvScDSVSRVeRlWtVsvYhR467Mfu1SoLp8+HaTgbo9HoA8dxh/fB3qqPwwaHxBQOcTcigF9hrVUehw2ON2LMw4+xiPeh3++HqEscxzYmcoaBB2j/Wa6VwzRPv49Nw8BhajgcPi97MX9aueHxDqgsHEYJpOgb7sQDHrRwirrg3W53ZrE6DW1wmO6IByycovPCGSOIssLTHedN0UXgjBH2K5wBSOKvu4QU7WEi1otpg0POZ3Jic8NhIcDOFHWtnCEXnLvCutkFjx1ZQmzTT9O+dAzHsYPviCvsiKLVarXr5MMmPc75TMBnYrphnNC0Y1K3xiqVyi6gx7B2Fm7628ZlfIUK/Xt53jf1c2EfTV8yvgAAAABJRU5ErkJggg==');
   background-position: right 10px top 50%, 0 0;
@@ -310,7 +307,7 @@ input[type='button']:hover {
 }
 
 .separator svg {
-  fill: #86b229;
+  fill: #4ca54c;
   pointer-events: none;
   vertical-align: middle;
 }
@@ -323,7 +320,7 @@ input[type='button']:hover {
   a {
     font-size: 10px;
     font-weight: 600;
-    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
+    font-family: monaco, 'andale mono', 'lucida console', 'courier new', monospace;
   }
   p,
   .status,
@@ -334,7 +331,7 @@ input[type='button']:hover {
   input[type='file'] {
     font-size: 11px;
     font-weight: normal;
-    font-family: monaco, "andale mono", "lucida console", "courier new", monospace;
+    font-family: monaco, 'andale mono', 'lucida console', 'courier new', monospace;
   }
 }
 
@@ -344,15 +341,25 @@ input[type='button']:hover {
   }
 }
 
-html[context="popup"] #log {
+html[context='popup'] #log {
   height: 300px;
   min-height: 300px;
 }
 
-html[context="webapp"] .console {
+html[context='popup'] .console textarea {
+  height: 247px;
+  max-height: 247px;
+  line-height: 22px;
+}
+
+html[context='webapp'] .console {
   height: calc(100vh - 265px);
 }
 
-html[context="webapp"] .toolbar {
+html[context='webapp'] .console textarea {
+  max-height: calc(100vh - 318px);
+}
+
+html[context='webapp'] .toolbar {
   display: none;
 }

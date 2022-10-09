@@ -16,7 +16,7 @@ var config  = {
       if (config.port.name === "win") {
         if (config.resize.timeout) window.clearTimeout(config.resize.timeout);
         config.resize.timeout = window.setTimeout(async function () {
-          var current = await chrome.windows.getCurrent();
+          let current = await chrome.windows.getCurrent();
           /*  */
           config.storage.write("interface.size", {
             "top": current.top,
@@ -32,7 +32,7 @@ var config  = {
     "name": '',
     "connect": function () {
       config.port.name = "webapp";
-      var context = document.documentElement.getAttribute("context");
+      let context = document.documentElement.getAttribute("context");
       /*  */
       if (chrome.runtime) {
         if (chrome.runtime.connect) {
@@ -68,13 +68,13 @@ var config  = {
     "write": function (id, data) {
       if (id) {
         if (data !== '' && data !== null && data !== undefined) {
-          var tmp = {};
+          let tmp = {};
           tmp[id] = data;
           config.storage.local[id] = data;
-          chrome.storage.local.set(tmp, function () {});
+          chrome.storage.local.set(tmp);
         } else {
           delete config.storage.local[id];
-          chrome.storage.local.remove(id, function () {});
+          chrome.storage.local.remove(id);
         }
       }
     }
@@ -86,9 +86,9 @@ var config  = {
         const language = document.querySelector("#language");
         const accuracy = document.querySelector("#accuracy");
         /*  */
-        var line = document.createElement("div");
-        var status = document.createElement("div");
-        var text = "OCR > loading tesseract.js, please wait...";
+        let line = document.createElement("div");
+        let status = document.createElement("div");
+        let text = "OCR > loading tesseract.js, please wait...";
         /*  */
         status.className = "status";
         status.appendChild(document.createTextNode(text));
@@ -99,7 +99,7 @@ var config  = {
           "workerBlobURL": false,
           "logger": config.app.update,
           "workerPath": "vendor/worker.min.js",
-          "corePath": "vendor/tesseract-core.asm.js",
+          "corePath": "vendor/tesseract-core.wasm.js",
           "cacheMethod": fromcache ? "write" : "refresh",
           "langPath": "https://raw.githubusercontent.com/naptha/tessdata/gh-pages/" + accuracy.value
         });
@@ -109,6 +109,7 @@ var config  = {
         await worker.load();
         await worker.loadLanguage(language.value);
         await worker.initialize(language.value);
+        /*  */
         const data = await worker.recognize(file);
         await worker.terminate();
         /*  */
@@ -117,14 +118,61 @@ var config  = {
       }
     }
   },
+  "load": function () {
+    let reload = document.getElementById("reload");
+    let choose = document.querySelector("#choose");
+    let support = document.getElementById("support");
+    let consent = document.querySelector("#consent");
+    let language = document.querySelector("#language");
+    let accuracy = document.querySelector("#accuracy");
+    let donation = document.getElementById("donation");
+    /*  */
+    reload.addEventListener("click", function () {
+      document.location.reload();
+    }, false);
+    /*  */
+    accuracy.addEventListener("change", function (e) {
+      config.storage.write("accuracy", e.target.selectedIndex);
+      window.lastFile && config.ocr.engine.start(window.lastFile, false);
+    });
+    /*  */
+    language.addEventListener("change", function (e) {
+      config.storage.write("language", e.target.selectedIndex);
+      window.lastFile && config.ocr.engine.start(window.lastFile, true);
+    });
+    /*  */
+    consent.addEventListener("click", function () {
+      config.storage.write("consent", true);
+      document.querySelector(".consent").style.display = "none";
+    });
+    /*  */
+    support.addEventListener("click", function () {
+      let url = config.addon.homepage();
+      chrome.tabs.create({"url": url, "active": true});
+    }, false);
+    /*  */
+    donation.addEventListener("click", function () {
+      let url = config.addon.homepage() + "?reason=support";
+      chrome.tabs.create({"url": url, "active": true});
+    }, false);
+    /*  */
+    choose.addEventListener("change", function () {
+      if (this.files && this.files.length) {
+        config.ocr.engine.start(window.lastFile = this.files[0], true);
+      }
+    });
+    /*  */
+    config.storage.load(config.app.start);
+    window.removeEventListener("load", config.load, false);
+  },
   "app": {
     "download": {
       "link": function () {
-        var textarea = document.querySelector("textarea");
+        let textarea = document.querySelector("textarea");
         if (textarea.value) {
-          var a = document.createElement("a");
-          var log = document.getElementById("log");
-          var blob = new Blob([textarea.value], {"type": "text/html"});
+          let a = document.createElement("a");
+          let log = document.getElementById("log");
+          let blob = new Blob([textarea.value], {"type": "text/html"});
           a.href = URL.createObjectURL(blob);
           a.title = "Click to download text as ocr_result.txt";
           a.download = "ocr_result.txt";
@@ -151,13 +199,13 @@ var config  = {
     },
     "start": function () {
       const context = document.documentElement.getAttribute("context");
-      const accuracy = config.storage.read("accuracy") !== undefined ? config.storage.read("accuracy") : 0;
+      const accuracy = config.storage.read("accuracy") !== undefined ? config.storage.read("accuracy") : 3;
       const language = config.storage.read("language") !== undefined ? config.storage.read("language") : 14;
       /*  */
       document.querySelector("#accuracy").selectedIndex = accuracy;
       document.querySelector("#language").selectedIndex = language;
       /*  */
-      config.app.update({"status": "(1) Low (2) Fast (shorter OCR time) (3) Best (better OCR accuracy) (4) Moderate"});
+      config.app.update({"status": "(1) Low, (2) Moderate, (3) Fast - shorter OCR time, (4) Best - better OCR accuracy"});
       config.app.update({"status": "Next, choose the desired OCR accuracy."});
       config.app.update({"status": "Alternatively, you can select your image file via the above file I/O input area."});
       config.app.update({"status": "Please select a language and then drag & drop an image in the above area."});
@@ -169,25 +217,25 @@ var config  = {
       }
     },
     "update": function (e) {   
-      var log = document.getElementById("log");
+      let log = document.getElementById("log");
       if (e.progress) log.style.backgroundImage = "none";
-    	var samestatus = log.firstChild && log.firstChild.status === e.status;
+    	let samestatus = log.firstChild && log.firstChild.status === e.status;
     	/*  */
     	if (samestatus) {
     		if ("progress" in e) {
-    			var progress = log.firstChild.querySelector("progress");
+    			let progress = log.firstChild.querySelector("progress");
     			progress.value = e.progress;
     		}
     	} else {
-    		var line = document.createElement("div");
-    		var status = document.createElement("div");
+    		let line = document.createElement("div");
+    		let status = document.createElement("div");
     		/*  */
-        var text = e.status;
+        let text = e.status;
         line.status = e.status;
     		status.className = "status";
         /*  */
     		if ("progress" in e) {
-    			var progress = document.createElement("progress");
+    			let progress = document.createElement("progress");
     			progress.value = e.progress;
     			progress.max = 1;
     			line.appendChild(progress);
@@ -196,11 +244,11 @@ var config  = {
         if (e.status === "done") {
           status.setAttribute(e.status, '');
           /*  */
-          var str_0 = "OCR > extraction is done! " + e.data.data.confidence + "% confidence, ";
-          var str_1 = e.data.data.symbols.length + " symbol" + (e.data.data.symbols.length === 1 ? '' : 's') + ", ";
-          var str_2 = e.data.data.words.length + " word" + (e.data.data.words.length === 1 ? '' : 's') + ", ";
-          var str_3 = e.data.data.lines.length + " line" + (e.data.data.lines.length === 1 ? '' : 's') + ", ";
-          var str_4 = e.data.data.paragraphs.length + " paragraph" + (e.data.data.paragraphs.length === 1 ? '' : 's') + " ";
+          let str_0 = "OCR > extraction is done! " + e.data.data.confidence + "% confidence, ";
+          let str_1 = e.data.data.symbols.length + " symbol" + (e.data.data.symbols.length === 1 ? '' : 's') + ", ";
+          let str_2 = e.data.data.words.length + " word" + (e.data.data.words.length === 1 ? '' : 's') + ", ";
+          let str_3 = e.data.data.lines.length + " line" + (e.data.data.lines.length === 1 ? '' : 's') + ", ";
+          let str_4 = e.data.data.paragraphs.length + " paragraph" + (e.data.data.paragraphs.length === 1 ? '' : 's') + " ";
           /*  */
           text = str_0 + str_1 + str_2 + str_3 + str_4;
         }
@@ -210,8 +258,8 @@ var config  = {
         log.insertBefore(line, log.firstChild);
     		/*  */
     		if (e.status === "done") {
-    			var div = document.createElement("div");
-    			var textarea = document.createElement("textarea");
+    			let div = document.createElement("div");
+    			let textarea = document.createElement("textarea");
     			textarea.value = e.data.data.text;
           div.className = "result";
           div.appendChild(textarea);
@@ -224,58 +272,10 @@ var config  = {
   }
 };
 
-var load = function () {
-  var reload = document.getElementById("reload");
-  var choose = document.querySelector("#choose");
-  var support = document.getElementById("support");
-  var consent = document.querySelector("#consent");
-  var language = document.querySelector("#language");
-  var accuracy = document.querySelector("#accuracy");
-  var donation = document.getElementById("donation");
-  /*  */
-  reload.addEventListener("click", function () {
-    document.location.reload();
-  }, false);
-  /*  */
-  accuracy.addEventListener("change", function (e) {
-    config.storage.write("accuracy", e.target.selectedIndex);
-    window.lastFile && config.ocr.engine.start(window.lastFile, false);
-  });
-  /*  */
-  language.addEventListener("change", function (e) {
-    config.storage.write("language", e.target.selectedIndex);
-    window.lastFile && config.ocr.engine.start(window.lastFile, true);
-  });
-  /*  */
-  consent.addEventListener("click", function () {
-    config.storage.write("consent", true);
-    document.querySelector(".consent").style.display = "none";
-  });
-  /*  */
-  support.addEventListener("click", function () {
-    var url = config.addon.homepage();
-    chrome.tabs.create({"url": url, "active": true});
-  }, false);
-  /*  */
-  donation.addEventListener("click", function () {
-    var url = config.addon.homepage() + "?reason=support";
-    chrome.tabs.create({"url": url, "active": true});
-  }, false);
-  /*  */
-  choose.addEventListener("change", function () {
-    if (this.files && this.files.length) {
-      config.ocr.engine.start(window.lastFile = this.files[0], true);
-    }
-  });
-  /*  */
-  config.storage.load(config.app.start);
-  window.removeEventListener("load", load, false);
-};
-
 config.port.connect();
 
 document.addEventListener("drop", config.cancel.drop, true);
 document.addEventListener("dragover", config.cancel.drop, true);
 
-window.addEventListener("load", load, false);
+window.addEventListener("load", config.load, false);
 window.addEventListener("resize", config.resize.method, false);
