@@ -365,11 +365,12 @@ html[context='popup'] .console textarea {
 }
 
 html[context='webapp'] .console {
-  height: calc(100vh - 265px);
+  background-size: 50% 85%;
+  height: calc(100vh - 310px);
 }
 
 html[context='webapp'] .console textarea {
-  max-height: calc(100vh - 318px);
+  max-height: calc(100vh - 363px);
 }
 
 html[context='webapp'] .toolbar {
