@@ -365,8 +365,8 @@ html[context='popup'] .console textarea {
 }
 
 html[context='webapp'] .console {
-  background-size: 50% 85%;
   height: calc(100vh - 310px);
+  background-position: 50% 85%;
 }
 
 html[context='webapp'] .console textarea {
