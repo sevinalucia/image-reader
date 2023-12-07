@@ -86,46 +86,47 @@ var config  = {
         const language = document.querySelector("#language");
         const accuracy = document.querySelector("#accuracy");
         /*  */
-        let line = document.createElement("div");
-        let status = document.createElement("div");
-        let text = "OCR > loading tesseract.js, please wait...";
+        const line = document.createElement("div");
+        const status = document.createElement("div");
+        const text = "OCR > loading tesseract.js, please wait...";
         /*  */
+        log.textContent = '';
         status.className = "status";
         status.appendChild(document.createTextNode(text));
         line.appendChild(status);
         log.insertBefore(line, log.firstChild);
         /*  */
-        const worker = new Tesseract.createWorker({
+        const worker = await Tesseract.createWorker(language.value, '3', {
           "workerBlobURL": false,
+          "corePath": "vendor/core",
           "logger": config.app.update,
           "workerPath": "vendor/worker.min.js",
-          "corePath": "vendor/tesseract-core.wasm.js",
           "cacheMethod": fromcache ? "write" : "refresh",
           "langPath": "https://raw.githubusercontent.com/naptha/tessdata/gh-pages/" + accuracy.value
         });
-        /*  */
+        /*
+          await worker.setParameters({
+            "save_raw_choices": '0',
+            "enable_new_segsearch": '0'
+          });
+        */
         config.app.is.working(true);
-        /*  */
-        await worker.load();
-        await worker.loadLanguage(language.value);
-        await worker.initialize(language.value);
-        /*  */
         const data = await worker.recognize(file);
         await worker.terminate();
-        /*  */
         config.app.is.working(false);
+        /*  */
         config.app.update({"status": "done", "data": data});
       }
     }
   },
   "load": function () {
-    let reload = document.getElementById("reload");
-    let choose = document.querySelector("#choose");
-    let support = document.getElementById("support");
-    let consent = document.querySelector("#consent");
-    let language = document.querySelector("#language");
-    let accuracy = document.querySelector("#accuracy");
-    let donation = document.getElementById("donation");
+    const reload = document.getElementById("reload");
+    const choose = document.querySelector("#choose");
+    const support = document.getElementById("support");
+    const consent = document.querySelector("#consent");
+    const language = document.querySelector("#language");
+    const accuracy = document.querySelector("#accuracy");
+    const donation = document.getElementById("donation");
     /*  */
     reload.addEventListener("click", function () {
       document.location.reload();
@@ -168,11 +169,11 @@ var config  = {
   "app": {
     "download": {
       "link": function () {
-        let textarea = document.querySelector("textarea");
+        const textarea = document.querySelector("textarea");
         if (textarea.value) {
-          let a = document.createElement("a");
-          let log = document.getElementById("log");
-          let blob = new Blob([textarea.value], {"type": "text/html"});
+          const a = document.createElement("a");
+          const log = document.getElementById("log");
+          const blob = new Blob([textarea.value], {"type": "text/html"});
           a.href = URL.createObjectURL(blob);
           a.title = "Click to download text as ocr_result.txt";
           a.download = "ocr_result.txt";
@@ -230,7 +231,7 @@ var config  = {
     		let line = document.createElement("div");
     		let status = document.createElement("div");
     		/*  */
-        let text = e.status;
+        let text = " > " + e.status;
         line.status = e.status;
     		status.className = "status";
         /*  */
@@ -244,11 +245,11 @@ var config  = {
         if (e.status === "done") {
           status.setAttribute(e.status, '');
           /*  */
-          let str_0 = "OCR > extraction is done! " + e.data.data.confidence + "% confidence, ";
-          let str_1 = e.data.data.symbols.length + " symbol" + (e.data.data.symbols.length === 1 ? '' : 's') + ", ";
-          let str_2 = e.data.data.words.length + " word" + (e.data.data.words.length === 1 ? '' : 's') + ", ";
-          let str_3 = e.data.data.lines.length + " line" + (e.data.data.lines.length === 1 ? '' : 's') + ", ";
-          let str_4 = e.data.data.paragraphs.length + " paragraph" + (e.data.data.paragraphs.length === 1 ? '' : 's') + " ";
+          let str_0 = "OCR > extraction is done! " + (e.data.data && e.data.data.confidence ? e.data.data.confidence + "% confidence, " : '');
+          let str_1 = e.data.data.symbols ? e.data.data.symbols.length + " symbol" + (e.data.data.symbols.length === 1 ? '' : 's') + ", " : '';
+          let str_2 = e.data.data.words ? e.data.data.words.length + " word" + (e.data.data.words.length === 1 ? '' : 's') + ", " : '';
+          let str_3 = e.data.data.lines ? e.data.data.lines.length + " line" + (e.data.data.lines.length === 1 ? '' : 's') + ", " : '';
+          let str_4 = e.data.data.paragraphs ? e.data.data.paragraphs.length + " paragraph" + (e.data.data.paragraphs.length === 1 ? '' : 's') + " " : '';
           /*  */
           text = str_0 + str_1 + str_2 + str_3 + str_4;
         }
