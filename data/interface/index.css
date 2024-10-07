@@ -358,6 +358,24 @@ html[context='popup'] #log {
   min-height: 290px;
 }
 
+#log div.copy {
+    top: 22px;
+    right: 96px;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 16px;
+    cursor: pointer;
+    position: absolute;
+    background: #4c7da5;
+    border-radius: 100%;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    background-image: url("../icons/copy-24.png");
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 html[context='popup'] .console textarea {
   height: 247px;
   max-height: 247px;
