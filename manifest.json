@@ -1,9 +1,8 @@
 {
-  "version": "0.1.7",
+  "version": "0.1.8",
   "manifest_version": 3,
   "offline_enabled": true,
   "name": "Image Reader (OCR)",
-  "permissions": ["storage", "contextMenus"],
   "homepage_url": "https://mybrowseraddon.com/image-reader.html",
   "description": "Easily get words out of an image with OCR engine!",
   "commands": {
@@ -12,6 +11,10 @@
   "background": {
     "service_worker": "background.js"
   },
+  "permissions": [
+    "storage", 
+    "contextMenus"
+  ],
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },

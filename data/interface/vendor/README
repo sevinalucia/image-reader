@@ -1,10 +1,10 @@
 This app uses the following open-source JavaScript libraries:
 
-vendor >> worker.min.js: https://unpkg.com/tesseract.js@5.0.3/dist/worker.min.js
-vendor >> tesseract.min.js: https://unpkg.com/tesseract.js@5.0.3/dist/tesseract.min.js
+vendor >> worker.min.js: https://unpkg.com/tesseract.js@5.1.1/dist/worker.min.js
+vendor >> tesseract.min.js: https://unpkg.com/tesseract.js@5.1.1/dist/tesseract.min.js
 
-vendor >> core >> tesseract-core.wasm.js: https://unpkg.com/tesseract.js-core@5.0.0/tesseract-core.wasm.js
-vendor >> core >> tesseract-core.wasm: https://unpkg.com/browse/tesseract.js-core@5.0.0/tesseract-core.wasm
-vendor >> core >> tesseract-core-simd.wasm.js: https://unpkg.com/tesseract.js-core@5.0.0/tesseract-core-simd.wasm.js
-vendor >> core >> tesseract-core-lstm.wasm.js: https://unpkg.com/tesseract.js-core@5.0.0/tesseract-core-lstm.wasm.js
-vendor >> core >> tesseract-core-simd-lstm.wasm.js: https://unpkg.com/tesseract.js-core@5.0.0/tesseract-core-simd-lstm.wasm.js
+vendor >> core >> tesseract-core.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0-5/tesseract-core.wasm.js
+vendor >> core >> tesseract-core.wasm: https://unpkg.com/browse/tesseract.js-core@6.0.0-5/tesseract-core.wasm
+vendor >> core >> tesseract-core-simd.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0-5/tesseract-core-simd.wasm.js
+vendor >> core >> tesseract-core-lstm.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0-5/tesseract-core-lstm.wasm.js
+vendor >> core >> tesseract-core-simd-lstm.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0-5/tesseract-core-simd-lstm.wasm.js

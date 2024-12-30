@@ -201,7 +201,7 @@ input[type='button']:hover {
 .toolbar table tr td {
   padding: 0;
   width: 42px;
-  color: #777;
+  color: #555;
   height: 40px;
   cursor: pointer;
   user-select: none;
@@ -209,7 +209,7 @@ input[type='button']:hover {
 }
 
 .toolbar table tr td svg {
-  fill: #777;
+  fill: #555;
   pointer-events: none;
   vertical-align: middle;
 }
