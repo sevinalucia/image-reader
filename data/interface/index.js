@@ -167,6 +167,24 @@ var config  = {
     window.removeEventListener("load", config.load, false);
   },
   "app": {
+    "copy": {
+      "element": function () {
+        const div = document.createElement("div");
+        div.className = "copy";
+        div.id = "copy";
+        const log = document.getElementById("log");
+        div.onclick = async () => { await config.app.copy.text() }
+        log.appendChild(div);
+      },
+      "text": async function () { 
+        const textarea = document.querySelector("textarea");
+        try { 
+          await navigator.clipboard.writeText(textarea.value);
+        } catch (e) {
+          alert("Failed to copy the content to the clipboard");
+        }
+      }
+    },
     "download": {
       "link": function () {
         const textarea = document.querySelector("textarea");
@@ -267,6 +285,7 @@ var config  = {
           log.insertBefore(div, log.firstChild);
           /*  */
           config.app.download.link();
+          config.app.copy.element();
     		}
     	}
     }
