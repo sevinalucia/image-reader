@@ -6,17 +6,26 @@ body {
   font-family: monospace;
 }
 
-table {
+.container {
+  border: 0;
+  width: 100%;
+  margin: auto;
+  outline: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.container table {
   width: 100%;
   height: 100%;
   border-spacing: 0;
 }
 
-table tr td {
+.container table tr td {
   padding: 0;
 }
 
-progress {
+.container progress {
   border: 0;
   color: #fff;
   float: right;
@@ -32,20 +41,20 @@ progress {
   transition: opacity 500ms linear;
 }
 
-progress[value='1'] {
+.container progress[value='1'] {
   opacity: 0.7;
 }
 
-select {
+.container select {
   width: 100%;
   color: #333;
   height: 100%;
   cursor: pointer;
   vertical-align: middle;
-  border: solid 1px rgba(0,0,0,0.1);
+  border: solid 1px rgba(0, 0, 0, 0.1);
 }
 
-input[type='file'] {
+.container input[type='file'] {
   width: 100%;
   color: #333;
   padding: 10px;
@@ -59,7 +68,7 @@ input[type='file'] {
   vertical-align: middle;
 }
 
-button {
+.container button {
   color: #333;
   width: 120px;
   height: 32px;
@@ -67,10 +76,10 @@ button {
   cursor: pointer;
   background: #fff;
   vertical-align: middle;
-  border: solid 1px rgba(0,0,0,0.1);
+  border: solid 1px rgba(0, 0, 0, 0.1);
 }
 
-p {
+.container p {
   color: #333;
   padding: 0 10px;
   font-size: 13px;
@@ -80,59 +89,72 @@ p {
   font-family: monospace;
 }
 
-a {
+.container a {
   top: 22px;
-  right: 42px;
   width: 32px;
   color: #fff;
   height: 32px;
   cursor: pointer;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 32px;
+  user-select: none;
   position: absolute;
   text-align: center;
-  background: #4ca54c;
   border-radius: 100%;
   text-decoration: none;
   font-family: monospace;
-  border: solid 1px rgba(0,0,0,0.1);
+  background-color: #4ca54c;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  transition: 300ms ease background-color;
 }
 
-a:hover, 
-select:hover, 
-button:hover, 
-input[type='button']:hover {
+.container a:hover {
+  background-color: #439843;
+}
+
+.container a.copy {
+  right: 84px;
+  font-size: 16px;
+  line-height: 36px;
+}
+
+.container a.download {
+  right: 42px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.container a.pending {
+  background-color: #346534;
+}
+
+.container a:hover, 
+.container select:hover, 
+.container button:hover, 
+.container input[type='button']:hover {
   transition: 300ms ease all;
-  border: solid 1px rgba(0,0,0,0.15);
+  border: solid 1px rgba(0, 0, 0, 0.15);
 }
 
-.container {
-  border: 0;
-  width: 100%;
-  margin: auto;
-  outline: none;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.content, .select, .consent, .console {
+.container .select,
+.container .content,
+.container .consent,
+.container .console {
   padding: 0;
   margin: 0 auto;
 }
 
-.status {
+.container .status {
   font-size: 13px;
   line-height: 22px;
   display: inline-block;
   font-family: monospace;
 }
 
-.status[done] {
+.container .status[done] {
   font-weight: 600;
 }
 
-.consent {
+.container .consent {
   left: 0;
   margin: 0;
   border: 0;
@@ -146,13 +168,13 @@ input[type='button']:hover {
   background-color: #ea4949;
 }
 
-.consent p {
+.container .consent p {
   color: #fff;
   padding: 10px;
   font-weight: 600;
 }
 
-.consent button {
+.container .consent button {
   width: 100%;
   height: 38px;
   margin-top: 0;
@@ -161,15 +183,15 @@ input[type='button']:hover {
   margin: 5px auto 15px auto;
 }
 
-.fileio {
+.container .fileio {
   padding: 0;
   position: relative;
-  border: solid 1px rgba(0,0,0,0.20);
+  border: solid 1px rgba(0, 0, 0, 0.20);
   background: #fbfbfb url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAACk2AAApNgHc42JBAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAG1JREFUWIVj/P//PwOpwHeZ71cGBgYuNOGvm6M285BqFhPJtlMZjDpg1AGjDhh1wKgDBtwBjD5Lfb6SoQ+9IoKBb6QaxILHMHIAyWYNeBSMOoCFgYyEw0DFRMg42iQbdcCoA0YdMOqAUQcMtAMAH6AVeLZnZIgAAAAASUVORK5CYII=') no-repeat center center;
   background-size: 16px;
 }
 
-.fileio .info {
+.container .fileio .info {
   left: 10px;
   color: #333;
   bottom: 10px;
@@ -181,54 +203,21 @@ input[type='button']:hover {
   font-family: monospace;
 }
 
-.content table {
+.container .content table {
   border-spacing: 1px 0;
 }
 
-.toolbar {
-  top: 11px;
-  right: 11px;
-  z-index: 11;
-  position: absolute;
-}
-
-.toolbar table {
-  width: auto;
-  border-spacing: 0;
-  table-layout: fixed;
-}
-
-.toolbar table tr td {
-  padding: 0;
-  width: 42px;
-  color: #555;
-  height: 40px;
-  cursor: pointer;
-  user-select: none;
-  text-align: center;
-}
-
-.toolbar table tr td svg {
-  fill: #555;
-  pointer-events: none;
-  vertical-align: middle;
-}
-
-.toolbar table tr td:hover {
-  background-color: rgba(0,0,0,0.05);
-}
-
-.console {
+.container .console {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
   height: calc(100vh - 310px);
-  border: 1px solid rgba(0,0,0,0.20);
+  border: 1px solid rgba(0, 0, 0, 0.20);
   background: #fff url('../icons/64.png') no-repeat 50% 70%;
   background-size: 64px;
 }
 
-.console textarea {
+.container .console textarea {
   width: 100%;
   color: #000;
   margin: 5px;
@@ -244,7 +233,7 @@ input[type='button']:hover {
   max-height: calc(100vh - 363px);
 }
 
-.console > div {
+.container .console > div {
   padding: 0;
   color: #333;
   margin: 3px;
@@ -259,25 +248,25 @@ input[type='button']:hover {
   font-family: monospace;
   text-overflow: ellipsis;
   background-color: #fbfbfb;
-  border: solid 1px rgba(0,0,0,0.05);
+  border: solid 1px rgba(0, 0, 0, 0.05);
 }
 
-.console .result {
+.container .console .result {
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.select {
+.container .select {
   height: 48px;
 }
 
-.select table {
+.container .select table {
   table-layout: fixed;
 }
 
-.select select {
+.container .select select {
   margin: 0;
   color: #333;
   height: 48px;
@@ -295,52 +284,90 @@ input[type='button']:hover {
   text-overflow: ellipsis;
   background-color: #fbfbfb;
   overflow: hidden !important;
-  border: 1px solid rgba(0,0,0,0.20);
+  border: 1px solid rgba(0, 0, 0, 0.20);
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxMAAAsTAQCanBgAAAHWSURBVFhH7ZY/TsMwFMZjZ0QM3KCiMEXiCnCDqv9WpooToIqt6sgZ6ITYWtELAEIsDDCjdkBwARATA1Vivs+JqzSyoaVtFvJJr7bfs/Pzv5fGK1SoUKfTkUmVpUhM+/KIiUajUUblMAzDPaXUhg55noJxkCnTWjomhPj0ff8ezEtRr9fbcJzqLjkriqITbsNW3MxfWPimxM9X0s5dYIdyMplcYCtuEl9uAvMWxbk/Ho/fgyB4hCPAjEpxeL0iXErZGgwGL7LZbPqoPOFGHiWzWqvScDSVSRVeRlWtVsvYhR467Mfu1SoLp8+HaTgbo9HoA8dxh/fB3qqPwwaHxBQOcTcigF9hrVUehw2ON2LMw4+xiPeh3++HqEscxzYmcoaBB2j/Wa6VwzRPv49Nw8BhajgcPi97MX9aueHxDqgsHEYJpOgb7sQDHrRwirrg3W53ZrE6DW1wmO6IByycovPCGSOIssLTHedN0UXgjBH2K5wBSOKvu4QU7WEi1otpg0POZ3Jic8NhIcDOFHWtnCEXnLvCutkFjx1ZQmzTT9O+dAzHsYPviCvsiKLVarXr5MMmPc75TMBnYrphnNC0Y1K3xiqVyi6gx7B2Fm7628ZlfIUK/Xt53jf1c2EfTV8yvgAAAABJRU5ErkJggg==');
   background-position: right 10px top 50%, 0 0;
   background-repeat: no-repeat, repeat;
 }
 
-.select select[disabled] {
+.container .select select[disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.separator {
+.container .separator {
   border: 0;
   padding: 20px;
   text-align: center;
   box-sizing: border-box;
 }
 
-.separator svg {
+.container .separator svg {
   fill: #4ca54c;
   pointer-events: none;
   vertical-align: middle;
 }
 
-#language {
+.container #language {
   margin-left: 2px
 }
 
-@-moz-document url-prefix() {
-  a {
-    font-size: 10px;
-    font-weight: 600;
-    font-family: monaco, 'andale mono', 'lucida console', 'courier new', monospace;
-  }
-  
-  p,
-  .status,
-  .fileio .info,
-  .select select,
-  .console > div,
-  .console textarea,
-  input[type='file'] {
-    font-size: 11px;
-    font-weight: normal;
-    font-family: monaco, 'andale mono', 'lucida console', 'courier new', monospace;
-  }
+.toolbar {
+  top: 11px;
+  right: 11px;
+  z-index: 11;
+  position: absolute;
+}
+
+.toolbar table {
+  width: auto;
+  height: 100%;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.toolbar table tr td {
+  padding: 0;
+  width: 42px;
+  height: 40px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+}
+
+.toolbar table tr td svg {
+  fill: #555;
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+.toolbar table tr td:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.theme {
+  top: 139px;
+  z-index: 11;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  position: fixed;
+  cursor: pointer;
+  align-items: center;
+  background-color: #fff;
+  justify-content: center;
+  transition: 300ms ease background-color;
+}
+
+.theme svg {
+  fill: #555;
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+.theme:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 @media (max-width: 300px) {
@@ -349,30 +376,80 @@ input[type='button']:hover {
   }
 }
 
-html[context='popup'] .console {
-  background-position: 50% 90%;
-}
-
-html[context='popup'] #log {
+html[context='popup'] .container #log {
   height: 290px;
   min-height: 290px;
 }
 
-html[context='popup'] .console textarea {
+html[context='popup'] .container .console {
+  background-position: 50% 90%;
+}
+
+html[context='popup'] .container .console textarea {
   height: 247px;
   max-height: 247px;
   line-height: 22px;
 }
 
-html[context='webapp'] .console {
+html[context='webapp'] .container .console {
   height: calc(100vh - 310px);
   background-position: 50% 85%;
 }
 
-html[context='webapp'] .console textarea {
+html[context='webapp'] .container .console textarea {
   max-height: calc(100vh - 363px);
 }
 
 html[context='webapp'] .toolbar {
   display: none;
+}
+
+html[theme='dark'], 
+html[theme='dark'] body {
+  color: #ebebeb;
+  color-scheme: dark;
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'] .container .console textarea {
+  color: #ebebeb;
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'] .container .fileio,
+html[theme='dark'] .container .console > div,
+html[theme='dark'] .container .select select {
+  color: #ebebeb;
+  background-color: #1a1a1a;
+}
+
+html[theme='dark'] .theme,
+html[theme='dark'] .container .console {
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'] .container .console > div {
+  border-color: rgb(255 255 255 / 10%);
+}
+
+html[theme='dark'] .container a,
+html[theme='dark'] .container .fileio,
+html[theme='dark'] .container .console,
+html[theme='dark'] .container .select select {
+  border-color: rgb(255 255 255 / 25%);
+}
+
+html[theme='dark'] .theme:hover,
+html[theme='dark'] .toolbar table tr td:hover {
+  background-color: rgb(255 255 255 / 5%);
+}
+
+html[theme='dark'] .container .fileio .info,
+html[theme='dark'] .container input[type='file'] {
+  color: #ebebeb;
+}
+
+html[theme='dark'] .theme svg,
+html[theme='dark'] .toolbar table tr td svg {
+  fill: #ebebeb;
 }

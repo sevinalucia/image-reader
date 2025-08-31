@@ -16,7 +16,7 @@ var config  = {
       if (config.port.name === "win") {
         if (config.resize.timeout) window.clearTimeout(config.resize.timeout);
         config.resize.timeout = window.setTimeout(async function () {
-          let current = await chrome.windows.getCurrent();
+          const current = await chrome.windows.getCurrent();
           /*  */
           config.storage.write("interface.size", {
             "top": current.top,
@@ -32,7 +32,7 @@ var config  = {
     "name": '',
     "connect": function () {
       config.port.name = "webapp";
-      let context = document.documentElement.getAttribute("context");
+      const context = document.documentElement.getAttribute("context");
       /*  */
       if (chrome.runtime) {
         if (chrome.runtime.connect) {
@@ -120,6 +120,7 @@ var config  = {
     }
   },
   "load": function () {
+    const theme = document.querySelector(".theme");
     const reload = document.getElementById("reload");
     const choose = document.querySelector("#choose");
     const support = document.getElementById("support");
@@ -148,12 +149,12 @@ var config  = {
     });
     /*  */
     support.addEventListener("click", function () {
-      let url = config.addon.homepage();
+      const url = config.addon.homepage();
       chrome.tabs.create({"url": url, "active": true});
     }, false);
     /*  */
     donation.addEventListener("click", function () {
-      let url = config.addon.homepage() + "?reason=support";
+      const url = config.addon.homepage() + "?reason=support";
       chrome.tabs.create({"url": url, "active": true});
     }, false);
     /*  */
@@ -163,25 +164,18 @@ var config  = {
       }
     });
     /*  */
+    theme.addEventListener("click", function () {
+      let attribute = document.documentElement.getAttribute("theme");
+      attribute = attribute === "dark" ? "light" : "dark";
+      /*  */
+      document.documentElement.setAttribute("theme", attribute);
+      config.storage.write("theme", attribute);
+    }, false);
+    /*  */
     config.storage.load(config.app.start);
     window.removeEventListener("load", config.load, false);
   },
   "app": {
-    "download": {
-      "link": function () {
-        const textarea = document.querySelector("textarea");
-        if (textarea.value) {
-          const a = document.createElement("a");
-          const log = document.getElementById("log");
-          const blob = new Blob([textarea.value], {"type": "text/html"});
-          a.href = URL.createObjectURL(blob);
-          a.title = "Click to download text as ocr_result.txt";
-          a.download = "ocr_result.txt";
-          a.textContent = "↓";
-          log.appendChild(a);
-        }
-      }
-    },
     "is": {
       "working": function (flag) {
         const log = document.getElementById("log");
@@ -200,11 +194,13 @@ var config  = {
     },
     "start": function () {
       const context = document.documentElement.getAttribute("context");
+      const theme = config.storage.read("theme") !== undefined ? config.storage.read("theme") : "light";
       const accuracy = config.storage.read("accuracy") !== undefined ? config.storage.read("accuracy") : 3;
       const language = config.storage.read("language") !== undefined ? config.storage.read("language") : 14;
       /*  */
       document.querySelector("#accuracy").selectedIndex = accuracy;
       document.querySelector("#language").selectedIndex = language;
+      document.documentElement.setAttribute("theme", theme !== undefined ? theme : "light");
       /*  */
       config.app.update({"status": "(1) Low, (2) Moderate, (3) Fast - shorter OCR time, (4) Best - better OCR accuracy"});
       config.app.update({"status": "Next, choose the desired OCR accuracy."});
@@ -217,26 +213,68 @@ var config  = {
         document.querySelector(".consent").style.display = consent ? "none" : "block";
       }
     },
-    "update": function (e) {   
-      let log = document.getElementById("log");
+    "text": {
+      "download": function () {
+        const textarea = document.querySelector("textarea");
+        if (textarea.value) {
+          const log = document.getElementById("log");
+          const download = document.createElement('a');
+          const blob = new Blob([textarea.value], {"type": "text/html"});
+          /*  */
+          download.textContent = '↓';
+          download.className = "download";
+          download.download = "ocr_result.txt";
+          download.href = URL.createObjectURL(blob);
+          download.title = "Click to download the OCR text as ocr_result.txt";
+          /*  */
+          log.appendChild(download);
+        }
+      },
+      "copy": function () {
+        const textarea = document.querySelector("textarea");
+        if (textarea.value) {
+          const copy = document.createElement('a');
+          const log = document.getElementById("log");
+          /*  */
+          copy.className = "copy";
+          copy.textContent = '⧉';
+          copy.title = "Click to copy the OCR text to the clipboard";
+          /*  */
+          copy.addEventListener("click", async function () {
+            try {
+              copy.classList.add("pending");
+              await navigator.clipboard.writeText(textarea.value);
+              await new Promise(resolve => window.setTimeout(resolve, 300));
+              copy.classList.remove("pending");
+            } catch (e) {
+              window.alert("Error! Failed to copy the OCR text to the clipboard!");
+            }
+          });
+          /*  */
+          log.appendChild(copy);
+        }
+      }
+    },
+    "update": function (e) {
+      const log = document.getElementById("log");
       if (e.progress) log.style.backgroundImage = "none";
-    	let samestatus = log.firstChild && log.firstChild.status === e.status;
+    	const samestatus = log.firstChild && log.firstChild.status === e.status;
     	/*  */
     	if (samestatus) {
     		if ("progress" in e) {
-    			let progress = log.firstChild.querySelector("progress");
+    			const progress = log.firstChild.querySelector("progress");
     			progress.value = e.progress;
     		}
     	} else {
-    		let line = document.createElement("div");
-    		let status = document.createElement("div");
-    		/*  */
         let text = " > " + e.status;
+    		const line = document.createElement("div");
+    		const status = document.createElement("div");
+    		/*  */
         line.status = e.status;
     		status.className = "status";
         /*  */
     		if ("progress" in e) {
-    			let progress = document.createElement("progress");
+    			const progress = document.createElement("progress");
     			progress.value = e.progress;
     			progress.max = 1;
     			line.appendChild(progress);
@@ -245,11 +283,11 @@ var config  = {
         if (e.status === "done") {
           status.setAttribute(e.status, '');
           /*  */
-          let str_0 = "OCR > extraction is done! " + (e.data.data && e.data.data.confidence ? e.data.data.confidence + "% confidence, " : '');
-          let str_1 = e.data.data.symbols ? e.data.data.symbols.length + " symbol" + (e.data.data.symbols.length === 1 ? '' : 's') + ", " : '';
-          let str_2 = e.data.data.words ? e.data.data.words.length + " word" + (e.data.data.words.length === 1 ? '' : 's') + ", " : '';
-          let str_3 = e.data.data.lines ? e.data.data.lines.length + " line" + (e.data.data.lines.length === 1 ? '' : 's') + ", " : '';
-          let str_4 = e.data.data.paragraphs ? e.data.data.paragraphs.length + " paragraph" + (e.data.data.paragraphs.length === 1 ? '' : 's') + " " : '';
+          const str_0 = "OCR > extraction is done! " + (e.data.data && e.data.data.confidence ? e.data.data.confidence + "% confidence, " : '');
+          const str_1 = e.data.data.symbols ? e.data.data.symbols.length + " symbol" + (e.data.data.symbols.length === 1 ? '' : 's') + ", " : '';
+          const str_2 = e.data.data.words ? e.data.data.words.length + " word" + (e.data.data.words.length === 1 ? '' : 's') + ", " : '';
+          const str_3 = e.data.data.lines ? e.data.data.lines.length + " line" + (e.data.data.lines.length === 1 ? '' : 's') + ", " : '';
+          const str_4 = e.data.data.paragraphs ? e.data.data.paragraphs.length + " paragraph" + (e.data.data.paragraphs.length === 1 ? '' : 's') + " " : '';
           /*  */
           text = str_0 + str_1 + str_2 + str_3 + str_4;
         }
@@ -259,14 +297,15 @@ var config  = {
         log.insertBefore(line, log.firstChild);
     		/*  */
     		if (e.status === "done") {
-    			let div = document.createElement("div");
-    			let textarea = document.createElement("textarea");
+    			const div = document.createElement("div");
+    			const textarea = document.createElement("textarea");
     			textarea.value = e.data.data.text;
           div.className = "result";
           div.appendChild(textarea);
           log.insertBefore(div, log.firstChild);
           /*  */
-          config.app.download.link();
+          config.app.text.copy();
+          config.app.text.download();
     		}
     	}
     }
