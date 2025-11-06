@@ -37,7 +37,7 @@ body {
   line-height: 12px;
   text-align: center;
   font-family: monospace;
-  margin: 10px 10px 0 auto;
+  margin: 5px 5px 0 auto;
   transition: opacity 500ms linear;
 }
 
@@ -55,10 +55,10 @@ body {
 }
 
 .container input[type='file'] {
-  width: 100%;
+  padding: 0;
+  margin: 10px;
   color: #333;
-  padding: 10px;
-  height: 120px;
+  height: 100px;
   outline: none;
   font-size: 13px;
   cursor: pointer;
@@ -66,6 +66,7 @@ body {
   font-family: monospace;
   box-sizing: border-box;
   vertical-align: middle;
+  width: calc(100% - 20px);
 }
 
 .container button {
@@ -90,7 +91,7 @@ body {
 }
 
 .container a {
-  top: 22px;
+  top: 10px;
   width: 32px;
   color: #fff;
   height: 32px;
@@ -111,14 +112,21 @@ body {
 }
 
 .container a.copy {
-  right: 84px;
+  right: 64px;
   font-size: 16px;
   line-height: 36px;
 }
 
 .container a.download {
-  right: 42px;
+  right: 24px;
   font-size: 22px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.container a.print {
+  right: 24px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 32px;
 }
@@ -141,17 +149,6 @@ body {
 .container .console {
   padding: 0;
   margin: 0 auto;
-}
-
-.container .status {
-  font-size: 13px;
-  line-height: 22px;
-  display: inline-block;
-  font-family: monospace;
-}
-
-.container .status[done] {
-  font-weight: 600;
 }
 
 .container .consent {
@@ -188,7 +185,7 @@ body {
   position: relative;
   border: solid 1px rgba(0, 0, 0, 0.20);
   background: #fbfbfb url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAACk2AAApNgHc42JBAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAG1JREFUWIVj/P//PwOpwHeZ71cGBgYuNOGvm6M285BqFhPJtlMZjDpg1AGjDhh1wKgDBtwBjD5Lfb6SoQ+9IoKBb6QaxILHMHIAyWYNeBSMOoCFgYyEw0DFRMg42iQbdcCoA0YdMOqAUQcMtAMAH6AVeLZnZIgAAAAASUVORK5CYII=') no-repeat center center;
-  background-size: 16px;
+  background-size: 22px;
 }
 
 .container .fileio .info {
@@ -208,54 +205,90 @@ body {
 }
 
 .container .console {
+  height: 120px;
   overflow-x: hidden;
   overflow-y: scroll;
-  position: relative;
-  height: calc(100vh - 310px);
   border: 1px solid rgba(0, 0, 0, 0.20);
-  background: #fff url('../icons/64.png') no-repeat 50% 70%;
-  background-size: 64px;
-}
-
-.container .console textarea {
-  width: 100%;
-  color: #000;
-  margin: 5px;
-  padding: 10px;
-  height: 100vh;
-  outline: none;
-  font-size: 14px;
-  line-height: 28px;
-  overflow-y: scroll;
-  font-family: monospace;
-  box-sizing: border-box;
-  border: solid 1px #86b229;
-  max-height: calc(100vh - 363px);
 }
 
 .container .console > div {
   padding: 0;
   color: #333;
   margin: 3px;
-  height: 32px;
+  height: 24px;
   font-size: 13px;
   overflow: hidden;
   text-indent: 5px;
-  line-height: 32px;
+  line-height: 24px;
   white-space: nowrap;
   text-align: justify;
   box-sizing: border-box;
   font-family: monospace;
-  text-overflow: ellipsis;
   background-color: #fbfbfb;
   border: solid 1px rgba(0, 0, 0, 0.05);
 }
 
-.container .console .result {
-  height: auto;
+.container .status {
+  height: 100%;
+  font-size: 13px;
+  overflow: hidden;
+  line-height: 22px;
+  white-space: nowrap;
+  display: inline-block;
+  font-family: monospace;
+  text-overflow: ellipsis;
+  width: calc(100% - 10px);
+}
+
+.container .status[done] {
+  font-weight: 600;
+}
+
+.container .result {
   display: flex;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.20);
+  background: #fff url('../icons/64.png') no-repeat 50% 50%;
+  background-size: 64px;
+}
+
+.container .result textarea {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  color: #000;
+  height: 100%;
+  padding: 10px;
+  outline: none;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-y: scroll;
+  font-family: monospace;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+
+.container .render {
+  display: flex;
+  min-height: 300px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 840px);
+  border: 1px solid rgba(0, 0, 0, 0.20);
+}
+
+.container .render iframe {
+  border: 0;
+  width: 100%;
+  padding: 0;
+  margin: auto;
+  height: 100%;
+  background: #fff;
 }
 
 .container .select {
@@ -274,11 +307,11 @@ body {
   font-size: 13px;
   appearance: none;
   font-weight: 600;
-  text-indent: 10px;
   user-select: none;
   white-space: nowrap;
   background-size: 8px;
-  padding: 0 28px 0 0px;
+  padding: 0 28px 0 10px;
+  box-sizing: border-box;
   font-family: monospace;
   width: calc(100% - 2px);
   text-overflow: ellipsis;
@@ -290,9 +323,10 @@ body {
   background-repeat: no-repeat, repeat;
 }
 
+.selector[disabled],
 .container .select select[disabled] {
   opacity: 0.5;
-  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .container .separator {
@@ -345,28 +379,35 @@ body {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.theme {
+.theme, .selector {
   top: 139px;
   z-index: 11;
-  right: 10px;
   width: 42px;
   height: 42px;
   display: flex;
-  position: fixed;
   cursor: pointer;
+  position: absolute;
   align-items: center;
   background-color: #fff;
   justify-content: center;
   transition: 300ms ease background-color;
 }
 
-.theme svg {
+.theme {
+  right: 10px;
+}
+
+.selector {
+  left: 10px;
+}
+
+.theme svg, .selector svg {
   fill: #555;
   pointer-events: none;
   vertical-align: middle;
 }
 
-.theme:hover {
+.theme:hover, .selector:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -376,7 +417,7 @@ body {
   }
 }
 
-html[context='popup'] .container #log {
+html[context='popup'] .container .console {
   height: 290px;
   min-height: 290px;
 }
@@ -385,10 +426,25 @@ html[context='popup'] .container .console {
   background-position: 50% 90%;
 }
 
-html[context='popup'] .container .console textarea {
+html[context='popup'] .container .result textarea {
   height: 247px;
   max-height: 247px;
   line-height: 22px;
+}
+
+html[engine='tesseract'] .container .render,
+html[engine='tesseract'] table tr td:has(#backend),
+html[engine='tesseract'] .container .separator.last {
+  display: none;
+}
+
+html[engine='tesseract'] .container .result {
+  height: calc(100vh - 482px);
+}
+
+html[engine='granite'] table tr td:has(#language),
+html[engine='granite'] table tr td:has(#accuracy) {
+  display: none;
 }
 
 html[context='webapp'] .container .console {
@@ -396,7 +452,7 @@ html[context='webapp'] .container .console {
   background-position: 50% 85%;
 }
 
-html[context='webapp'] .container .console textarea {
+html[context='webapp'] .container .result textarea {
   max-height: calc(100vh - 363px);
 }
 
@@ -411,20 +467,28 @@ html[theme='dark'] body {
   background-color: #1e1e1e;
 }
 
-html[theme='dark'] .container .console textarea {
+html[theme='dark'] .container .console > div {
   color: #ebebeb;
-  background-color: #1e1e1e;
+  background-color: rgb(255 255 255 / 10%);
 }
 
 html[theme='dark'] .container .fileio,
-html[theme='dark'] .container .console > div,
 html[theme='dark'] .container .select select {
   color: #ebebeb;
   background-color: #1a1a1a;
 }
 
+html[theme='dark'] .theme:hover,
+html[theme='dark'] .selector:hover,
+html[theme='dark'] .toolbar table tr td:hover {
+  background-color: rgb(255 255 255 / 5%);
+}
+
 html[theme='dark'] .theme,
-html[theme='dark'] .container .console {
+html[theme='dark'] .selector,
+html[theme='dark'] .container .result,
+html[theme='dark'] .container .console,
+html[theme='dark'] .container .render iframe {
   background-color: #1e1e1e;
 }
 
@@ -433,23 +497,22 @@ html[theme='dark'] .container .console > div {
 }
 
 html[theme='dark'] .container a,
+html[theme='dark'] .container .render,
 html[theme='dark'] .container .fileio,
+html[theme='dark'] .container .result,
 html[theme='dark'] .container .console,
 html[theme='dark'] .container .select select {
-  border-color: rgb(255 255 255 / 25%);
-}
-
-html[theme='dark'] .theme:hover,
-html[theme='dark'] .toolbar table tr td:hover {
-  background-color: rgb(255 255 255 / 5%);
+  border-color: rgb(255 255 255 / 35%);
 }
 
 html[theme='dark'] .container .fileio .info,
+html[theme='dark'] .container .result textarea,
 html[theme='dark'] .container input[type='file'] {
   color: #ebebeb;
 }
 
 html[theme='dark'] .theme svg,
+html[theme='dark'] .selector svg,
 html[theme='dark'] .toolbar table tr td svg {
   fill: #ebebeb;
 }

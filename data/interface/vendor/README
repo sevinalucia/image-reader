@@ -2,9 +2,18 @@ This app uses the following open-source JavaScript libraries:
 
 vendor >> worker.min.js: https://unpkg.com/tesseract.js@6.0.1/dist/worker.min.js
 vendor >> tesseract.min.js: https://unpkg.com/tesseract.js@6.0.1/dist/tesseract.min.js
+vendor >> transformers.js: https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.5/dist/transformers.js
 
 vendor >> core >> tesseract-core.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0/tesseract-core.wasm.js
 vendor >> core >> tesseract-core.wasm: https://unpkg.com/browse/tesseract.js-core@6.0.0/tesseract-core.wasm
 vendor >> core >> tesseract-core-simd.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0/tesseract-core-simd.wasm.js
 vendor >> core >> tesseract-core-lstm.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0/tesseract-core-lstm.wasm.js
 vendor >> core >> tesseract-core-simd-lstm.wasm.js: https://unpkg.com/tesseract.js-core@6.0.0/tesseract-core-simd-lstm.wasm.js
+
+vendor >> katex >> fonts *: https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/
+vendor >> katex >> katex.css: https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.css
+vendor >> katex >> katex.mjs: https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.mjs
+vendor >> katex >> auto-render.mjs: https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/contrib/auto-render.mjs
+
+vendor >> wasm >> ort-wasm-simd-threaded.jsep.mjs: https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.5/dist/ort-wasm-simd-threaded.jsep.mjs
+vendor >> wasm >> ort-wasm-simd-threaded.jsep.wasm: https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.5/dist/ort-wasm-simd-threaded.jsep.wasm

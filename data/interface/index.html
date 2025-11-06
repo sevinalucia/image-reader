@@ -7,6 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
+    <div class="selector" title="Capture Screenshot">
+      <svg width="14" height="14" viewBox="0 0 48 48">
+        <path d="M 11.072917 0.421875 C 9.6662613 0.4931789 8.5416678 1.6665212 8.5416667 3.0885417 L 8.5416667 8.28125 L 3.3489583 8.28125 C 1.8815199 8.28125 0.68229167 9.4804758 0.68229167 10.947917 C 0.68229167 12.415353 1.8815192 13.614583 3.3489583 13.614583 L 32.875 13.614583 C 33.395061 13.633423 33.752113 13.782666 33.994792 14.026042 C 34.237469 14.269416 34.388644 14.630862 34.40625 15.151042 L 34.40625 44.671875 C 34.40625 46.139315 35.605477 47.338542 37.072917 47.338542 C 38.540353 47.338542 39.739582 46.139315 39.739583 44.671875 L 39.739583 39.479167 L 44.932292 39.479167 C 46.399728 39.479167 47.598958 38.279941 47.598958 36.8125 C 47.598958 35.345059 46.399728 34.145833 44.932292 34.145833 L 39.739583 34.145833 L 39.739583 12.947917 C 39.739583 11.501913 39.237991 10.260827 38.46875 9.5572917 C 37.766016 8.7853163 36.52192 8.28125 35.072917 8.28125 L 13.875 8.28125 L 13.875 3.0885417 C 13.875 1.6211044 12.675773 0.421875 11.208333 0.421875 C 11.182583 0.421875 11.137852 0.418583 11.072917 0.421875 z"/>
+        <path d="M 8.5416667,18.145833 V 18.546875 34.8125 c 0,1.447859 0.4996071,2.692502 1.2708333,3.395833 0.70341,0.771309 1.953182,1.270834 3.401042,1.270834 H 29.875 V 34.145833 H 15.473958 c -1.373482,0 -1.598958,-0.965169 -1.598958,-1.598958 V 18.145833 Z"/>
+      </svg>
+    </div>
     <div class="theme" title="Dark | Light mode">
       <svg width="11" height="11" viewBox="0 0 122.8799 122.8799">
         <path d="M 63.550085,1.4875858 A 60.101027,60.101027 0 0 0 3.45,61.587666 60.101027,60.101027 0 0 0 63.550085,121.6899 60.101027,60.101027 0 0 0 119.56373,83.196612 50.463617,50.463617 0 0 1 102.0998,86.352622 50.463617,50.463617 0 0 1 51.637166,35.887862 50.463617,50.463617 0 0 1 65.189815,1.5691534 60.101027,60.101027 0 0 0 63.550085,1.4875858 Z"/>
@@ -60,7 +66,19 @@
         <table>
           <tr>
             <td>
-              <select id="accuracy">
+              <select id="engine" title="Select the OCR engine">
+                <option value="tesseract">Google Tesseract</option>
+                <option value="granite">IBM Granite Docling</option>
+              </select>
+            </td>
+            <td>
+              <select id="backend" title="Select the OCR backend">
+                <option value="wasm">CPU (WASM)</option>
+                <option value="webgpu">GPU (WebGPU)</option>
+              </select>
+            </td>
+            <td>
+              <select id="accuracy" title="Select the OCR accuracy">
                 <option value='3.02'>Low (minimum OCR accuracy)</option>
                 <option value='4.0.0'>Moderate (moderate OCR accuracy)</option>
                 <option value='4.0.0_fast'>Fast (shorter OCR time)</option>
@@ -68,7 +86,7 @@
               </select>
             </td>
             <td>
-              <select id="language">
+              <select id="language" title="Select the OCR language">
                 <option value='afr'>Afrikaans</option>
                 <option value='ara'>Arabic</option>
                 <option value='aze'>Azerbaijani</option>
@@ -145,7 +163,23 @@
           <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
         </svg>
       </div>
-      <div class="console" id="log"></div>
+      <div class="console"></div>
+      <div class="separator">
+        <svg width="16" height="16" viewBox="0 0 32 32">
+          <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
+        </svg>
+      </div>
+      <div class="result" title="OCR result in plain text format">
+        <textarea></textarea>
+      </div>
+      <div class="separator last">
+        <svg width="16" height="16" viewBox="0 0 32 32">
+          <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
+        </svg>
+      </div>
+      <div class="render" title="OCR result in HTML format">
+        <iframe></iframe>
+      </div>
     </div>
     <!-- -->
     <script type="text/javascript" src="vendor/tesseract.min.js"></script>

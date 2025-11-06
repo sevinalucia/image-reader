@@ -1,0 +1,165 @@
+body {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 13px;
+  background-color: #fff;
+  font-family: system-ui, sans-serif;
+}
+
+.container {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.container .toolbar {
+  border: 0;
+  margin: 0;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container .toolbar button {
+  margin: 0;
+  padding: 0;
+  color: #333;
+  height: 42px;
+  width: 170px;
+  outline: none;
+  font-size: 13px;
+  padding: 0 10px;
+  cursor: pointer;
+  overflow: hidden;
+  appearance: none;
+  user-select: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  background-color: #fbfbfb;
+  border: 1px solid rgba(0, 0, 0, 0.20);
+  transition: 300ms ease background-color;
+}
+
+.container .toolbar #capture {
+  display: none;
+}
+
+.container .toolbar #reload {
+  border: 0;
+  width: 42px;
+  min-width: 42px;
+  background-color: #fff;
+}
+
+.container .toolbar button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.container .toolbar button svg {
+  fill: #636363;
+  user-select: none;
+  vertical-align: middle;
+}
+
+.container .toolbar button:hover {
+  background-color: #f3f3f3 !important;
+}
+
+.container .box {
+  border: 0;
+  margin: 0;
+  gap: 10px;
+  padding: 10px;
+  display: flex;
+  margin-top: 10px;
+  flex-flow: column;
+  align-items: center;
+  box-sizing: border-box;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+.container .content {
+  position: relative;
+}
+
+.container .result,
+.container .content {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  padding: 10px;
+  min-width: 100px;
+  min-height: 100px;
+  box-sizing: border-box;
+  height: calc(calc(100vh / 2) - 52px);
+  border: 1px solid rgba(0, 0, 0, 0.20);
+}
+
+.container .content .overlay {
+  top: 0;
+  left: 0;
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  border: 2px dashed red;
+}
+
+.container .content video {
+  margin: 0;
+  width: auto;
+  height: auto;
+  display: none;
+  max-height: 100%;
+}
+
+.container .result canvas {
+  border: 0;
+  width: auto;
+  height: auto;
+  margin: auto;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+html[theme='dark'], 
+html[theme='dark'] body {
+  color: #ebebeb;
+  color-scheme: dark;
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'] .container .toolbar button,
+html[theme='dark'] .container .toolbar #reload {
+  color: #ebebeb;
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'] .container .toolbar button:hover {
+  background-color: #292929 !important;
+}
+
+html[theme='dark'] .container .box {
+  border-color: rgb(255 255 255 / 10%);
+}
+
+html[theme='dark'] .container .result,
+html[theme='dark'] .container .content,
+html[theme='dark'] .container .toolbar button {
+  border-color: rgb(255 255 255 / 20%);
+}
+
+html[theme='dark'] .container .toolbar button svg {
+  fill: #ebebeb;
+}
