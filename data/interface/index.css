@@ -417,19 +417,8 @@ body {
   }
 }
 
-html[context='popup'] .container .console {
-  height: 290px;
-  min-height: 290px;
-}
-
-html[context='popup'] .container .console {
-  background-position: 50% 90%;
-}
-
-html[context='popup'] .container .result textarea {
-  height: 247px;
-  max-height: 247px;
-  line-height: 22px;
+html[context='webapp'] .toolbar {
+  display: none;
 }
 
 html[engine='tesseract'] .container .render,
@@ -444,19 +433,6 @@ html[engine='tesseract'] .container .result {
 
 html[engine='granite'] table tr td:has(#language),
 html[engine='granite'] table tr td:has(#accuracy) {
-  display: none;
-}
-
-html[context='webapp'] .container .console {
-  height: calc(100vh - 310px);
-  background-position: 50% 85%;
-}
-
-html[context='webapp'] .container .result textarea {
-  max-height: calc(100vh - 363px);
-}
-
-html[context='webapp'] .toolbar {
   display: none;
 }
 
