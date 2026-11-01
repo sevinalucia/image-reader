@@ -461,11 +461,11 @@ html[layout='columns'] .container .content .col > .separator {
 
 .container .render iframe {
   border: 0;
-  width: 100%;
   padding: 0;
+  width: 100%;
   margin: auto;
-  height: 100%;
   background: #fff;
+  height: calc(100% - 1px);
 }
 
 /* the pane shows only once content lands - the display gate rides
