@@ -1,0 +1,247 @@
+/* ============================================================================
+   modern.css — Material skin (M3 tokens, loaded after index.css and
+   responsive.css). Skin-only: colors, borders, radii and hovers — no
+   geometry. Runtime tokens live on html[style] set from the settings.
+   ============================================================================ */
+
+html[uimode='modern'] body {
+  background-color: #f6f8f4;
+}
+
+html[uimode='modern'] .toolbar table tr td {
+  border-radius: 2px;
+}
+
+html[uimode='modern'] .toolbar table tr td:hover {
+  background-color: rgba(83, 142, 234, 0.10);
+}
+
+html[uimode='modern'] .toolbar table tr td svg {
+  fill: #333;
+}
+
+html[uimode='modern'] .container .fileio {
+  border-radius: 4px;
+  border: solid 1px #e2e5de;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+}
+
+html[uimode='modern'] .container input[type='file'] {
+  border-radius: 4px;
+}
+
+html[uimode='modern'] .container .fileio.hover {
+  border: solid 1px var(--accent);
+  background-color: rgba(83, 142, 234, 0.10);
+}
+
+html[uimode='modern'] .container .console {
+  border-radius: 4px;
+  border: solid 1px #e2e5de;
+}
+
+html[uimode='modern'] .container .console > div {
+  border-radius: 2px;
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html[uimode='modern'] .container .console .status {
+  font-family: monospace;
+}
+
+html[uimode='modern'] .container .result {
+  border-radius: 4px;
+  border: solid 1px #e2e5de;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+html[uimode='modern'] .container .result textarea {
+  border-radius: 4px;
+}
+
+html[uimode='modern'] .container .render {
+  border-radius: 4px;
+  border: solid 1px #e2e5de;
+}
+
+html[uimode='modern'] .container .render iframe {
+  border-radius: 4px;
+}
+
+html[uimode='modern'] .container button {
+  border-radius: 2px;
+  border: solid 1px #e2e5de;
+}
+
+html[uimode='modern'] .container button:hover {
+  border: solid 1px #c8cec0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/*  */
+/* modern skin: the action cluster behaves exactly like the toolbar
+   buttons (accent tinted hover, dark glyphs), no borders of its own */
+html[uimode='modern'] .toolbar .actions a svg {
+  fill: #333;
+}
+
+html[uimode='modern'] .toolbar .actions a:hover {
+  background-color: rgba(83, 142, 234, 0.10);
+}
+
+/*  */
+html[uimode='modern'] .container .consent {
+  background-color: var(--accent);
+}
+
+html[uimode='modern'] .container .consent button {
+  border-radius: 2px;
+}
+
+/*  */
+html[uimode='modern'] .settings .row .choice select {
+  border: solid 1px #e2e5de;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+html[uimode='modern'] .settings .row .choice select:hover {
+  border: solid 1px var(--accent-hover);
+}
+
+html[uimode='modern'] .settings .row .choice input[type='text'] {
+  border: solid 1px #e2e5de;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+html[uimode='modern'] .settings .row .choice input[type='text']:hover {
+  border: solid 1px var(--accent-hover);
+}
+
+html[uimode='modern'] .settings .row {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html[uimode='modern'] .settings .note {
+  color: #8a917f;
+}
+
+/*  */
+html[theme='dark'][uimode='modern'] body {
+  background-color: #131511;
+}
+
+html[theme='dark'][uimode='modern'] .container .fileio {
+  border-color: #2a2d26;
+  background-color: #1d201b;
+}
+
+html[theme='dark'][uimode='modern'] .container .console {
+  border-color: #2a2d26;
+}
+
+html[theme='dark'][uimode='modern'] .container .console > div {
+  background-color: #1d201b;
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+html[theme='dark'][uimode='modern'] .container .console .status {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='modern'] .container .result {
+  border-color: #2a2d26;
+  background-color: #1d201b;
+}
+
+html[theme='dark'][uimode='modern'] .container .result textarea {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='modern'] .container .render {
+  border-color: #2a2d26;
+}
+
+html[theme='dark'][uimode='modern'] .container .render iframe {
+  background-color: #1d201b;
+}
+
+html[theme='dark'][uimode='modern'] .container button {
+  border: solid 1px #2a2d26;
+  background-color: #1d201b;
+}
+
+html[theme='dark'][uimode='modern'] .container button:hover {
+  border: solid 1px #3a3e35;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+html[theme='dark'][uimode='modern'] .settings .row .choice select {
+  color: #ebebeb;
+  border: solid 1px #2a2d26;
+  background-color: #1d201b;
+  /* the chevron rides a dark png skin-wide: a light arrow keeps the
+     picker legible on the near-black surface */
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 5.5l5 5 5-5' fill='none' stroke='%23d0d0d0' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-position: right 10px top 50%;
+  background-repeat: no-repeat;
+  background-size: 8px;
+}
+
+html[theme='dark'][uimode='modern'] .settings .row .choice select:hover {
+  border: solid 1px var(--accent-hover);
+}
+
+html[theme='dark'][uimode='modern'] .settings .row .choice input[type='text'] {
+  border: solid 1px #2a2d26;
+  background-color: #1d201b;
+}
+
+html[theme='dark'][uimode='modern'] .settings .row .choice input[type='text']:hover {
+  border: solid 1px var(--accent-hover);
+}
+
+html[theme='dark'][uimode='modern'] .settings .row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+html[theme='dark'][uimode='modern'] .settings .note {
+  color: #7a8272;
+}
+
+html[theme='dark'][uimode='modern'] .toolbar table tr td:hover,
+html[theme='dark'][uimode='modern'] .toolbar .actions a:hover {
+  background-color: rgba(83, 142, 234, 0.10);
+}
+
+/*  */
+/* the modern-dark block above repaints backgrounds and borders only -
+   body color + native scheme heal every inherited label, the explicit
+   mirrors cover the rules that pin #333 in index.css */
+html[theme='dark'][uimode='modern'] body {
+  color: #ebebeb;
+  color-scheme: dark;
+}
+
+html[theme='dark'][uimode='modern'] .container .fileio .info,
+html[theme='dark'][uimode='modern'] .container p,
+html[theme='dark'][uimode='modern'] .container input[type='file'] {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='modern'] .settings .row .choice input[type='text'] {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='modern'] .container .consent button {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='modern'] .toolbar table tr td svg,
+html[theme='dark'][uimode='modern'] .toolbar .actions a svg {
+  fill: #ebebeb;
+}

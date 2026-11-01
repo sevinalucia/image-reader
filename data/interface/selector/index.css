@@ -17,12 +17,15 @@ body {
   box-sizing: border-box;
 }
 
+/* the toolbar row keeps the button-owned 42px height: a base 100%
+   height inside the flex column made flex-shrink split the window
+   between the bar and the capture area, floating buttons mid-frame */
 .container .toolbar {
   border: 0;
   margin: 0;
   gap: 10px;
   width: 100%;
-  height: 100%;
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,10 +50,6 @@ body {
   background-color: #fbfbfb;
   border: 1px solid rgba(0, 0, 0, 0.20);
   transition: 300ms ease background-color;
-}
-
-.container .toolbar #capture {
-  display: none;
 }
 
 .container .toolbar #reload {
@@ -89,21 +88,47 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.10);
 }
 
+/* the content column owns the popup height; viewport padding 20 +
+   toolbar 42 + box margin 10 + own padding 20 + its borders 2 -> the
+   video box spans the full window instead of half of it; the width
+   takes the same treatment (fit-content collapsed to the 100px
+   minimum and floated the strip in the middle of the window) */
 .container .content {
+  margin: 0;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  height: calc(100vh - 94px);
+  border: 1px solid rgba(0, 0, 0, 0.20);
+  display: flex;
+  flex-flow: column;
   position: relative;
 }
 
-.container .result,
-.container .content {
+.container .result {
   margin: 0;
   padding: 0;
   width: auto;
-  padding: 10px;
   min-width: 100px;
   min-height: 100px;
   box-sizing: border-box;
-  height: calc(calc(100vh / 2) - 52px);
+  flex: 1 1 0;
   border: 1px solid rgba(0, 0, 0, 0.20);
+}
+
+.container .content .viewport {
+  margin: 0;
+  padding: 0;
+  display: none;
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* the wrapper hugs the video exactly, so overlay coordinates and the
+   crop rectangle share one origin */
+.container .content .viewport video {
+  display: block;
 }
 
 .container .content .overlay {
@@ -116,10 +141,11 @@ body {
 }
 
 .container .content video {
-  margin: 0;
   width: auto;
+  margin: auto;
   height: auto;
   display: none;
+  max-width: 100%;
   max-height: 100%;
 }
 
@@ -133,7 +159,36 @@ body {
   max-height: 100%;
 }
 
-html[theme='dark'], 
+html[embedded] .container .content {
+  gap: 5px;
+  height: calc(100vh - 57px);
+}
+
+html[embedded] .container {
+  padding: 5px;
+}
+
+html[embedded] .container .box,
+html[embedded] .container .content {
+  border: 0;
+  padding: 0;
+}
+
+html[embedded] .container .toolbar {
+  gap: 5px;
+  justify-content: space-between;
+}
+
+html[embedded] .container .toolbar button {
+  width: 100%;
+}
+
+html[embedded] .container .box {
+  gap: 5px;
+  margin-top: 5px;
+}
+
+html[theme='dark'],
 html[theme='dark'] body {
   color: #ebebeb;
   color-scheme: dark;

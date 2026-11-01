@@ -91,9 +91,8 @@ pre code {
   text-align: center;
 }
 
-.formula:not(:has(.katex)) {
-  color: transparent;
-}
+/* no :has fallback here on purpose: a failed KaTeX import must show
+   the raw TeX, not an invisible hole in the document */
 
 .page-break {
   margin: 2em 0;
@@ -128,7 +127,7 @@ pre code {
   margin-bottom: 0.5em;
 }
 
-html[theme='dark'], 
+html[theme='dark'],
 html[theme='dark'] body {
   color: #ebebeb;
   color-scheme: dark;
@@ -146,4 +145,85 @@ html[theme='dark'] h4,
 html[theme='dark'] h5,
 html[theme='dark'] h6 {
   color: #ebebeb;
+}
+
+/* docling kitchen-sink classes: the light boxes at the bottom of the
+   file would glow inside the dark pane without these mirrors */
+html[theme='dark'] th {
+  background-color: #2a2a2a;
+}
+
+/* the light borders under the backgrounds kept glowing after the
+   background mirrors landed */
+html[theme='dark'] th,
+html[theme='dark'] td {
+  border-color: #3a3a3a;
+}
+
+html[theme='dark'] .key-value-region {
+  background-color: #262626;
+}
+
+html[theme='dark'] .form-container {
+  border: 1px solid #3a3a3a;
+}
+
+html[theme='dark'] h1 {
+  border-bottom-color: #3a3a3a;
+}
+
+html[theme='dark'] .page-break {
+  border-top: 1px dashed #4a4a4a;
+}
+
+/* print: Chrome ships no backgrounds, so the dark skins would send
+   #ebebeb text to white paper (an empty page) - the print pass forces
+   the light palette in every theme; the mirrors keep the same
+   specificity as the rules above and win on cascade order, so no
+   !important is needed */
+
+@media print {
+  html, html[theme='dark'], html[theme='dark'] body {
+    color: #000;
+    background-color: #fff;
+    color-scheme: light;
+  }
+
+  html[theme='dark'] figcaption {
+    color: #333;
+  }
+
+  html[theme='dark'] h1,
+  html[theme='dark'] h2,
+  html[theme='dark'] h3,
+  html[theme='dark'] h4,
+  html[theme='dark'] h5,
+  html[theme='dark'] h6 {
+    color: #000;
+  }
+
+  html[theme='dark'] h1 {
+    border-bottom-color: #eee;
+  }
+
+  html[theme='dark'] th {
+    background-color: #f2f2f2;
+  }
+
+  html[theme='dark'] th,
+  html[theme='dark'] td {
+    border-color: #ddd;
+  }
+
+  html[theme='dark'] .key-value-region {
+    background-color: #f9f9f9;
+  }
+
+  html[theme='dark'] .form-container {
+    border: 1px solid #ddd;
+  }
+
+  html[theme='dark'] .page-break {
+    border-top: 1px dashed #ccc;
+  }
 }

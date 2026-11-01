@@ -8,7 +8,7 @@ export class DoclingConverter {
     this.simpleTagMap = {
       "text": "p",
       "title": "h1",
-      "form": "form",
+      "form": "div",
       "doctag": "div",
       "otsl": "table",
       "paragraph": "p",
@@ -76,6 +76,7 @@ export class DoclingConverter {
   }
 
   convertToHTML(docling) {
+    if (typeof docling !== "string") return '';
     let html = ` ${docling} `;
     html = this.cleanupMetadataTokens(html);
     html = this.processTags(html);
@@ -110,6 +111,9 @@ export class DoclingConverter {
   }
 
   convertSingleTag(tagName, content) {
+    /* a self-closing pair never fills the content group (regex skips
+       it) - normalize before any call reaches the trim */
+    content = typeof content === "string" ? content : '';
     if (tagName === "list_item") {
       content = content.trim().replace(/^[·-]\s*/g, '');
     }
@@ -138,7 +142,6 @@ export class DoclingConverter {
           const startTag = this.getStartTag(tagName, htmlTag);
           return `${startTag}${processedContent}</${htmlTag}>`;
         }
-        console.warn(`Unknown tag encountered: ${tagName}, escaping it.`);
         return this.escapeHtml(`<${tagName}>${content}</${tagName}>`);
     }
   }
@@ -229,6 +232,17 @@ export class DoclingConverter {
       const parts = rowStr.split(this.TABLE_TAG_REGEX);
       const currentRow = [];
       let gridColIndex = 0;
+      /* the model occasionally leaks plain text before the first cell
+         tag - it joins as a leading plain cell instead of vanishing */
+      if (typeof parts[0] === "string" && parts[0].trim()) {
+        currentRow.push({
+          content: parts[0],
+          tag: '<fcel>',
+          colspan: 1,
+          rowspan: 1,
+        });
+        gridColIndex++;
+      }
       for (let i = 1; i < parts.length; i += 2) {
         const tag = parts[i];
         const cellContent = parts[i + 1] || '';
@@ -236,17 +250,22 @@ export class DoclingConverter {
           case "<lcel>":
             if (currentRow.length > 0) {
               currentRow[currentRow.length - 1].colspan++;
+              /* a merged continuation keeps its text - the model puts
+                 the content tail after the merge mark */
+              if (cellContent && cellContent.trim()) currentRow[currentRow.length - 1].content += cellContent;
             }
             break;
           case "<ucel>":
             if (rowIndex > 0 && ((_a = cellGrid[rowIndex - 1]) === null || _a === void 0 ? void 0 : _a[gridColIndex])) {
               cellGrid[rowIndex - 1][gridColIndex].rowspan++;
+              if (cellContent && cellContent.trim()) cellGrid[rowIndex - 1][gridColIndex].content += cellContent;
             }
             gridColIndex++;
             break;
           case "<xcel>":
             if (currentRow.length > 0) {
               currentRow[currentRow.length - 1].colspan++;
+              if (cellContent && cellContent.trim()) currentRow[currentRow.length - 1].content += cellContent;
             }
             break;
           default:
@@ -289,10 +308,11 @@ export class DoclingConverter {
   convertPictureOrChart(tag, content) {
     if (/<(fcel|ched|rhed)>/.test(content)) {
       const cleanedContent = content.replace(/<[a-z_]+>/g, (match) => {
-        if (match.startsWith("<fcel") || match.startsWith("<ched") || match.startsWith("<rhed") || match.startsWith("<nl")) {
-          return match;
-        }
-        return '';
+        /* every table vocabulary tag survives - ucel/lcel/xcel carry
+           the colspan semantics, so stripping them like unknown markup
+           shifted a picture table's columns against the real <otsl>;
+           <nl> stays too - the row separators feed convertTable */
+        return this.TABLE_TAG_REGEX.test(match) || match === "<nl>" ? match : '';
       });
       return this.convertTable(cleanedContent);
     }
@@ -311,7 +331,9 @@ export class DoclingConverter {
     if (classMatch) {
       altText = classMatch[1].replace(/_/g, " ");
     }
-    const imgHtml = `<img alt="${this.escapeHtml(altText)}" src=''>`;
+    /* the empty src attribute resolves against the document URL and
+       fires a self-request + broken-image icon — omit the attribute */
+    const imgHtml = `<img alt="${this.escapeHtml(altText)}">`;
     const figureTag = this.simpleTagMap[tag] || "figure";
     return `<${figureTag}>${imgHtml}${captionHtml}</${figureTag}>`;
   }
@@ -329,7 +351,9 @@ export class DoclingConverter {
       "dockerfile": "docker",
       "objectivec": "objective-c"
     };
-    return aliasMap[lowerLang] || lowerLang.replace(/[\s#+]/g, "-");
+    /* anything outside [a-z0-9_-] would end up inside class="language-…"
+       markup — unknown signs drop to a dash */
+    return aliasMap[lowerLang] || lowerLang.replace(/[^a-z0-9_-]+/g, "-");
   }
 
   cleanupMetadataTokens(docling) {
@@ -341,12 +365,19 @@ export class DoclingConverter {
     text = text
     .replace(/<paragraph>(.*?)<\/paragraph>/gs, '\n\n$1')
     .replace(/<section_header_level_[0-9]+>(.*?)<\/section_header_level_[0-9]+>/gs, '\n\n$1\n')
-    .replace(/<list_item>(.*?)<\/list_item>/gs, '\n• $1')
+    .replace(/<title>(.*?)<\/title>/gs, '\n\n$1\n')
+    .replace(/<list_item>(.*?)<\/list_item>/gs, '\n\u2022 $1')
     .replace(/<nl>/g, '\n')
-    .replace(/<[^>]+>/g, '') // remove all remaining tags
+    /*
+      remove only the known docling markup - a raw-name strip also ate
+      literal text like <b> inside the extracted body; title already
+      bloomed above and form keeps only its inner content
+    */
+    .replace(/<\/?(paragraph|section_header_level_[0-9]+|list_item|title|form|otsl|doctag|text|document|smiles|formula|reference|footnote|ordered_list|unordered_list|document_index|page_footer|page_header|key_value_region|page_break|checkbox_selected|checkbox_unselected|caption|chart|picture|inline|code|nl|thead|tbody|tfoot|rhed|srow|fcel|ecel|ched|ucel|lcel|xcel|table[a-z_]*|caption)>/g, '')
     .replace(/\s+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
     return text;
   }
 }
+

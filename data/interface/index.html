@@ -1,188 +1,384 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" engine="tesseract" layout="columns">
   <head>
     <title>Image Reader (OCR)</title>
+    <script src="theme.js"></script>
     <link type="text/css" rel="stylesheet" href="index.css">
+    <link type="text/css" rel="stylesheet" href="resources/responsive.css">
+    <link type="text/css" rel="stylesheet" href="resources/modern.css">
+    <link type="text/css" rel="stylesheet" href="resources/dark.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   </head>
   <body>
-    <div class="selector" title="Capture Screenshot">
-      <svg width="14" height="14" viewBox="0 0 48 48">
-        <path d="M 11.072917 0.421875 C 9.6662613 0.4931789 8.5416678 1.6665212 8.5416667 3.0885417 L 8.5416667 8.28125 L 3.3489583 8.28125 C 1.8815199 8.28125 0.68229167 9.4804758 0.68229167 10.947917 C 0.68229167 12.415353 1.8815192 13.614583 3.3489583 13.614583 L 32.875 13.614583 C 33.395061 13.633423 33.752113 13.782666 33.994792 14.026042 C 34.237469 14.269416 34.388644 14.630862 34.40625 15.151042 L 34.40625 44.671875 C 34.40625 46.139315 35.605477 47.338542 37.072917 47.338542 C 38.540353 47.338542 39.739582 46.139315 39.739583 44.671875 L 39.739583 39.479167 L 44.932292 39.479167 C 46.399728 39.479167 47.598958 38.279941 47.598958 36.8125 C 47.598958 35.345059 46.399728 34.145833 44.932292 34.145833 L 39.739583 34.145833 L 39.739583 12.947917 C 39.739583 11.501913 39.237991 10.260827 38.46875 9.5572917 C 37.766016 8.7853163 36.52192 8.28125 35.072917 8.28125 L 13.875 8.28125 L 13.875 3.0885417 C 13.875 1.6211044 12.675773 0.421875 11.208333 0.421875 C 11.182583 0.421875 11.137852 0.418583 11.072917 0.421875 z"/>
-        <path d="M 8.5416667,18.145833 V 18.546875 34.8125 c 0,1.447859 0.4996071,2.692502 1.2708333,3.395833 0.70341,0.771309 1.953182,1.270834 3.401042,1.270834 H 29.875 V 34.145833 H 15.473958 c -1.373482,0 -1.598958,-0.965169 -1.598958,-1.598958 V 18.145833 Z"/>
-      </svg>
-    </div>
-    <div class="theme" title="Dark | Light mode">
-      <svg width="11" height="11" viewBox="0 0 122.8799 122.8799">
-        <path d="M 63.550085,1.4875858 A 60.101027,60.101027 0 0 0 3.45,61.587666 60.101027,60.101027 0 0 0 63.550085,121.6899 60.101027,60.101027 0 0 0 119.56373,83.196612 50.463617,50.463617 0 0 1 102.0998,86.352622 50.463617,50.463617 0 0 1 51.637166,35.887862 50.463617,50.463617 0 0 1 65.189815,1.5691534 60.101027,60.101027 0 0 0 63.550085,1.4875858 Z"/>
-      </svg>
-    </div>
-		<div class="toolbar">
+    <div class="toolbar">
+      <div class="actions"></div>
       <table>
         <tr>
-          <td id="reload" title="Reload UI">
-            <svg width="12" height="12" viewBox="0 0 512 512">
+          <td id="settings" role="button" tabindex="0" title="Open settings">
+            <svg class="default" width="13" height="13" viewBox="0 0 28 28">
+              <g transform="matrix(2.1646693,0,0,2.1646693,-1004.7755,-822.57435) translate(464,380)">
+                <path d="M 5.291747 7.3914293e-06 C 5.143599 7.3914293e-06 4.9923362 0.079047754 4.9669283 0.25986233 L 4.7070734 2.0147854 C 4.3170741 2.1447853 3.8930007 2.3918547 3.6017877 2.665325 L 2.0417558 2.0147854 C 1.8467562 1.9497856 1.679114 1.996668 1.5870096 2.1447129 L 0.28683269 4.4202481 C 0.24592767 4.5195349 0.2867604 4.7161217 0.41676016 4.8100305 L 1.7819008 5.8503525 C 1.70197 6.2886408 1.709374 6.7144634 1.7819008 7.1496272 L 0.41676016 8.2549129 C 0.2867604 8.3849125 0.28679703 8.5146959 0.35179643 8.6446953 L 1.6519734 10.920231 C 1.7169742 10.985231 1.8467562 11.050195 2.0417558 10.985194 L 3.6667514 10.334655 C 3.9917509 10.594653 4.3416255 10.821626 4.7720371 10.985194 L 5.0318921 12.675154 C 5.0318921 12.805155 5.161711 12.935009 5.3567107 12.935009 L 7.9570646 12.935009 C 8.0870641 12.935009 8.2818833 12.805155 8.2818833 12.675154 L 8.5417382 10.985194 C 8.9425138 10.855195 9.3220246 10.594653 9.647024 10.334655 L 11.27202 10.985194 C 11.402018 11.050194 11.596803 10.985266 11.661802 10.855267 L 12.961979 8.5797316 C 13.026979 8.449732 13.027015 8.2549495 12.897015 8.1899492 L 11.401947 7.1496272 C 11.481867 6.7113382 11.474477 6.2855156 11.401947 5.8503525 L 12.767088 4.7450668 C 12.897089 4.615067 12.897052 4.485284 12.832051 4.3552844 L 11.531875 2.0797491 C 11.466875 2.0147493 11.337092 1.9497857 11.142092 2.0147854 L 9.5170965 2.665325 C 9.1920973 2.405326 8.8287526 2.1447853 8.4118108 2.0147854 L 8.1519558 0.32482606 C 8.1298436 0.19516072 8.0366195 7.3914293e-06 7.8921009 7.3914293e-06 L 5.291747 7.3914293e-06 z M 6.591924 4.2253569 C 7.8269211 4.2253569 8.8665569 5.2649922 8.8665569 6.4999899 C 8.8665569 7.7349872 7.8269211 8.7746228 6.591924 8.7746228 C 5.356926 8.7746228 4.3163887 7.7349872 4.3163887 6.4999899 C 4.3163887 5.2649922 5.356926 4.2253569 6.591924 4.2253569 z"/>
+              </g>
+            </svg>
+            <svg class="swap" width="13" height="13" viewBox="0 0 16 16">
+              <path d="M 8.0429687,0.12304688 C 8.7763796,0.85643294 9.5103588,1.5892506 10.244141,2.3222656 L 6.1347656,6.4355469 H 15.828125 V 9.5644531 H 6.1347656 L 10.244141,13.677734 8.0429687,15.876953 0.16601562,8 Z"/>
+            </svg>
+          </td>
+          <td id="uimode" role="button" tabindex="0" title="Classic | Material style">
+            <svg class="default" width="13" height="13" viewBox="0 0 24 24">
+              <path d="m 0.85144158,21.615878 c -0.46858967,-0.468592 -0.46858914,-1.093381 1.16e-6,-1.561971 L 7.0993209,13.806028 4.7563664,11.463073 7.8803054,8.3391345 15.690153,16.148983 12.566214,19.272921 10.22326,16.929967 3.9753831,23.177843 c -0.3904999,0.390492 -1.1714787,0.390494 -1.5619701,1e-6 z M 8.6612903,7.5581499 14.128185,0.52928689 23.5,9.9011033 16.471138,15.367997 Z"/>
+            </svg>
+            <svg class="swap" width="13" height="13" viewBox="0 0 24 24">
+              <path d="m 0.85144158,21.615878 c -0.46858967,-0.468592 -0.46858914,-1.093381 1.16e-6,-1.561971 L 7.0993209,13.806028 4.7563664,11.463073 7.8803054,8.3391345 15.690153,16.148983 12.566214,19.272921 10.22326,16.929967 3.9753831,23.177843 c -0.3904999,0.390492 -1.1714787,0.390494 -1.5619701,1e-6 z M 8.6612903,7.5581499 14.128185,0.52928689 23.5,9.9011033 16.471138,15.367997 Z"/>
+            </svg>
+          </td>
+          <td id="layout" role="button" tabindex="0" title="Side by side | Stacked rows">
+            <svg width="13" height="13" viewBox="0 0 24 24">
+              <path d="M1.1,24h21.8c0.6,0,1.1-0.5,1.1-1.1V1.1C24,0.5,23.5,0,22.9,0H1.1C0.5,0,0,0.5,0,1.1v21.8C0,23.5,0.5,24,1.1,24z M22,2v20 h-6V2H22z M2,2h13v20H2V2z"/>
+            </svg>
+          </td>
+          <td id="screenshot" role="button" tabindex="0" title="Capture a screenshot">
+            <svg width="13" height="13" viewBox="0 0 48 48">
+              <path d="M 11.072917 0.421875 C 9.6662613 0.4931789 8.5416678 1.6665212 8.5416667 3.0885417 L 8.5416667 8.28125 L 3.3489583 8.28125 C 1.8815199 8.28125 0.68229167 9.4804758 0.68229167 10.947917 C 0.68229167 12.415353 1.8815192 13.614583 3.3489583 13.614583 L 32.875 13.614583 C 33.395061 13.633423 33.752113 13.782666 33.994792 14.026042 C 34.237469 14.269416 34.388644 14.630862 34.40625 15.151042 L 34.40625 44.671875 C 34.40625 46.139315 35.605477 47.338542 37.072917 47.338542 C 38.540353 47.338542 39.739582 46.139315 39.739583 44.671875 L 39.739583 39.479167 L 44.932292 39.479167 C 46.399728 39.479167 47.598958 38.279941 47.598958 36.8125 C 47.598958 35.345059 46.399728 34.145833 44.932292 34.145833 L 39.739583 34.145833 L 39.739583 12.947917 C 39.739583 11.501913 39.237991 10.260827 38.46875 9.5572917 C 37.766016 8.7853163 36.52192 8.28125 35.072917 8.28125 L 13.875 8.28125 L 13.875 3.0885417 C 13.875 1.6211044 12.675773 0.421875 11.208333 0.421875 C 11.182583 0.421875 11.137852 0.418583 11.072917 0.421875 z"/>
+              <path d="M 8.5416667,18.145833 V 18.546875 34.8125 c 0,1.447859 0.4996071,2.692502 1.2708333,3.395833 0.70341,0.771309 1.953182,1.270834 3.401042,1.270834 H 29.875 V 34.145833 H 15.473958 c -1.373482,0 -1.598958,-0.965169 -1.598958,-1.598958 V 18.145833 Z"/>
+            </svg>
+          </td>
+          <td id="export" role="button" tabindex="0" title="Export settings">
+            <svg width="13" height="13" viewBox="0 0 128 128">
+              <path d="M 99.107143 7.0178571 L 99.107143 120.98214 L 120.16071 120.98214 L 120.16071 7.0178571 L 99.107143 7.0178571 z M 47.678571 27.821429 L 8.1428571 64 L 47.678571 100.17857 L 47.678571 75.517857 L 90.928571 75.517857 L 90.928571 52.482143 L 47.678571 52.482143 L 47.678571 27.821429 z"/>
+            </svg>
+          </td>
+          <td id="import" role="button" tabindex="0" title="Import settings">
+            <svg width="13" height="13" viewBox="0 0 128 128">
+              <path d="M 99.107143 7.0178571 L 99.107143 120.98214 L 120.16071 120.98214 L 120.16071 7.0178571 L 99.107143 7.0178571 z M 51.392857 27.821429 L 51.392857 52.482143 L 8.1428571 52.482143 L 8.1428571 75.517857 L 51.392857 75.517857 L 51.392857 100.17857 L 90.928571 64 L 51.392857 27.821429 z"/>
+            </svg>
+          </td>
+          <td id="reset" role="button" tabindex="0" title="Reset all settings">
+            <svg width="13" height="13" viewBox="0 0 48 48">
+              <path d="m 11.622,14.265 h 20.106 v 6.190317 L 44.25532,10.327657 31.728085,0.199997 31.727915,6.39 H 3.7445105 L 3.744681,22.987232 H 11.622 Z"/>
+              <path d="M 36.378,33.735 H 16.271915 V 27.544679 L 3.744595,37.672339 16.27183,47.799999 16.272,41.61 h 27.983404 l -1.7e-4,-16.597236 H 36.378 Z"/>
+            </svg>
+          </td>
+          <td id="theme" role="button" tabindex="0" title="Dark | Light mode">
+            <svg class="default" width="13" height="13" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4.6"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(45 12 12)"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(90 12 12)"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(135 12 12)"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(180 12 12)"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(225 12 12)"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(270 12 12)"/>
+              <rect x="11" y="1.5" width="2" height="4.4" rx="1" transform="rotate(315 12 12)"/>
+            </svg>
+            <svg class="swap" width="13" height="13" viewBox="0 0 122.8799 122.8799">
+              <path d="M 63.550085,1.4875858 A 60.101027,60.101027 0 0 0 3.45,61.587666 60.101027,60.101027 0 0 0 63.550085,121.6899 60.101027,60.101027 0 0 0 119.56373,83.196612 50.463617,50.463617 0 0 1 102.0998,86.352622 50.463617,50.463617 0 0 1 51.637166,35.887862 50.463617,50.463617 0 0 1 65.189815,1.5691534 60.101027,60.101027 0 0 0 63.550085,1.4875858 Z"/>
+            </svg>
+          </td>
+          <td class="extension" id="reload" role="button" tabindex="0" title="Reload UI">
+            <svg width="13" height="13" viewBox="0 0 512 512">
               <path d="M281.525,228.102l104.758-78.042 c12.082-12.085,12.082-24.259,0-36.342L281.525,35.674c-3.274-2.359-7.359-3.725-11.723-3.725c-10.992,0-19.803,8.536-19.803,19.083  v35.429C144.611,86.737,59.205,172.046,59.205,277.258c0,105.396,85.672,190.793,191.248,190.793 c98.03,0,178.809-73.498,189.977-168.169c0.092-0.275,0.367-3.187,0.367-4.455c0-9.992-8.181-18.169-18.261-18.169h-45.793 c-14.993,0-26.349,10.355-27.893,18.986c-8.811,46.156-49.519,80.954-98.397,80.954c-55.329,0-100.127-44.701-100.127-99.94 c0-55.064,44.523-99.667,99.674-99.941v35.437c0,10.541,8.811,19.076,19.803,19.076C274.166,231.83,278.251,230.471,281.525,228.102 z"/>
             </svg>
           </td>
-        </tr>
-        <tr>
-          <td id="support" title="Open support page">
-            <svg width="11" height="11" viewBox="0 0 1792 1792">
+          <td class="extension" id="support" role="button" tabindex="0" title="Open support page">
+            <svg width="13" height="13" viewBox="0 0 1792 1792">
               <path d="M1088 1256v240q0 16-12 28t-28 12h-240q-16 0-28-12t-12-28v-240q0-16 12-28t28-12h240q16 0 28 12t12 28zm316-600q0 54-15.5 101t-35 76.5-55 59.5-57.5 43.5-61 35.5q-41 23-68.5 65t-27.5 67q0 17-12 32.5t-28 15.5h-240q-15 0-25.5-18.5t-10.5-37.5v-45q0-83 65-156.5t143-108.5q59-27 84-56t25-76q0-42-46.5-74t-107.5-32q-65 0-108 29-35 25-107 115-13 16-31 16-12 0-25-8l-164-125q-13-10-15.5-25t5.5-28q160-266 464-266 80 0 161 31t146 83 106 127.5 41 158.5z"/>
             </svg>
           </td>
-        </tr>
-        <tr>
-          <td id="donation" title="Make a donation">
-            <svg width="11" height="11" viewBox="-0.709 -11.555 141.732 141.732">
+          <td class="extension" id="donation" role="button" tabindex="0" title="Make a donation">
+            <svg width="13" height="13" viewBox="-0.709 -11.555 141.732 141.732">
               <path d="M140.314,37.654C140.314,16.858,123.402,0,102.537,0c-13.744,0-25.77,7.317-32.379,18.255C63.549,7.317,51.521,0,37.777,0 C16.912,0,0,16.858,0,37.654c0,10.821,4.588,20.57,11.922,27.438h-0.01l54.084,51.584c0.992,1.188,2.48,1.945,4.148,1.945 c1.545,0,2.936-0.653,3.92-1.696l54.346-51.833h-0.016C135.729,58.225,140.314,48.476,140.314,37.654"/>
             </svg>
           </td>
         </tr>
       </table>
-		</div>
+    </div>
     <div class="container">
       <div class="content">
-        <div class="fileio">
-          <div class="info">Choose or drop an image file here</div>
-          <input id="choose" type="file" accept="image/*"></input>
+        <div class="col left">
+          <div class="fileio">
+            <div class="info">Choose or drop an image file here</div>
+            <input id="choose" type="file" accept="image/*">
+          </div>
+          <div class="separator">
+            <svg width="16" height="16" viewBox="0 0 32 32">
+              <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
+            </svg>
+          </div>
+          <div class="console"></div>
         </div>
-      </div>
-      <div class="separator">
-        <svg width="16" height="16" viewBox="0 0 32 32">
-          <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
-        </svg>
+        <div class="col right">
+          <div class="separator">
+            <svg width="16" height="16" viewBox="0 0 32 32">
+              <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
+            </svg>
+          </div>
+          <div class="result" title="OCR result in plain text format">
+            <textarea aria-label="OCR result in plain text format"></textarea>
+          </div>
+          <div class="separator last">
+            <svg width="16" height="16" viewBox="0 0 32 32">
+              <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
+            </svg>
+          </div>
+          <div class="render" title="OCR result in HTML format">
+            <iframe title="OCR result in HTML format"></iframe>
+          </div>
+          <div class="clipper" title="Screen clipper">
+            <iframe title="Screen clipper"></iframe>
+          </div>
+        </div>
       </div>
       <div class="consent">
         <p>
-          Note: this app uses: "github.com/naptha/tessdata/tree/gh-pages/"
-          GitHub repo to fetch language data required for the OCR operation.
+          Note: this app fetches remote OCR data: Tesseract language data
+          from "https://raw.githubusercontent.com/naptha/tessdata/gh-pages/"
+          and the Granite Docling OCR model from
+          "https://huggingface.co/onnx-community/granite-docling-258M-ONNX".
+          Both are cached, so the app stays offline after the first download.
         </p>
         <button id="consent">Ok</button>
       </div>
-      <div class="select">
-        <table>
-          <tr>
-            <td>
-              <select id="engine" title="Select the OCR engine">
-                <option value="tesseract">Google Tesseract</option>
-                <option value="granite">IBM Granite Docling</option>
-              </select>
-            </td>
-            <td>
-              <select id="backend" title="Select the OCR backend">
-                <option value="wasm">CPU (WASM)</option>
-                <option value="webgpu">GPU (WebGPU)</option>
-              </select>
-            </td>
-            <td>
-              <select id="accuracy" title="Select the OCR accuracy">
-                <option value='3.02'>Low (minimum OCR accuracy)</option>
-                <option value='4.0.0'>Moderate (moderate OCR accuracy)</option>
-                <option value='4.0.0_fast'>Fast (shorter OCR time)</option>
-                <option value='4.0.0_best'>Best (best OCR accuracy)</option>
-              </select>
-            </td>
-            <td>
-              <select id="language" title="Select the OCR language">
-                <option value='afr'>Afrikaans</option>
-                <option value='ara'>Arabic</option>
-                <option value='aze'>Azerbaijani</option>
-                <option value='bel'>Belarusian</option>
-                <option value='ben'>Bengali</option>
-                <option value='bul'>Bulgarian</option>
-                <option value='cat'>Catalan</option>
-                <option value='ces'>Czech</option>
-                <option value='chi_sim'>Chinese</option>
-                <option value='chi_tra'>Traditional Chinese</option>
-                <option value='chr'>Cherokee</option>
-                <option value='dan'>Danish</option>
-                <option value='deu'>German</option>
-                <option value='ell'>Greek</option>
-                <option value='eng'>English</option>
-                <option value='enm'>English (Old)</option>
-                <option value='meme'>Internet Meme</option>
-                <option value='epo'>Esperanto</option>
-                <option value='epo_alt'>Esperanto alternative </option>
-                <option value='equ'>Math</option>
-                <option value='est'>Estonian</option>
-                <option value='eus'>Basque</option>
-                <option value='fin'>Finnish</option>
-                <option value='fra'>French</option>
-                <option value='frk'>Frankish</option>
-                <option value='frm'>French (Old)</option>
-                <option value='glg'>Galician </option>
-                <option value='grc'>Ancient Greek</option>
-                <option value='heb'>Hebrew</option>
-                <option value='hin'>Hindi</option>
-                <option value='hrv'>Croatian</option>
-                <option value='hun'>Hungarian</option>
-                <option value='ind'>Indonesian</option>
-                <option value='isl'>Icelandic</option>
-                <option value='ita'>Italian</option>
-                <option value='ita_old'>Italian (Old)</option>
-                <option value='jpn'>Japanese</option>
-                <option value='kan'>Kannada</option>
-                <option value='kor'>Korean</option>
-                <option value='lav'>Latvian</option>
-                <option value='lit'>Lithuanian</option>
-                <option value='mal'>Malayalam</option>
-                <option value='mkd'>Macedonian</option>
-                <option value='mlt'>Maltese</option>
-                <option value='msa'>Malay</option>
-                <option value='nld'>Dutch</option>
-                <option value='nor'>Norwegian</option>
-                <option value='pol'>Polish</option>
-                <option value='por'>Portuguese</option>
-                <option value='ron'>Romanian</option>
-                <option value='rus'>Russian</option>
-                <option value='slk'>Slovakian</option>
-                <option value='slv'>Slovenian</option>
-                <option value='spa'>Spanish</option>
-                <option value='spa_old'>Old Spanish</option>
-                <option value='sqi'>Albanian</option>
-                <option value='srp'>Serbian (Latin)</option>
-                <option value='swa'>Swahili</option>
-                <option value='swe'>Swedish</option>
-                <option value='tam'>Tamil</option>
-                <option value='tel'>Telugu</option>
-                <option value='tgl'>Tagalog</option>
-                <option value='tha'>Thai</option>
-                <option value='tur'>Turkish</option>
-                <option value='ukr'>Ukrainian</option>
-                <option value='vie'>Vietnamese</option>
-              </select>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="separator">
-        <svg width="16" height="16" viewBox="0 0 32 32">
-          <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
-        </svg>
-      </div>
-      <div class="console"></div>
-      <div class="separator">
-        <svg width="16" height="16" viewBox="0 0 32 32">
-          <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
-        </svg>
-      </div>
-      <div class="result" title="OCR result in plain text format">
-        <textarea></textarea>
-      </div>
-      <div class="separator last">
-        <svg width="16" height="16" viewBox="0 0 32 32">
-          <path d="M 31.340012,10.183252 27.767344,6.6105862 16.022007,18.355922 4.27667,6.6105862 0.704,10.183252 16.022007,25.501258 Z"/>
-        </svg>
-      </div>
-      <div class="render" title="OCR result in HTML format">
-        <iframe></iframe>
-      </div>
     </div>
-    <!-- -->
+    <div class="settings">
+      <div class="group" id="grid-selectors">
+      <div class="row" id="engine-row">
+        <span class="label">OCR engine</span>
+        <span class="choice">
+          <select id="engine" title="Select the OCR engine">
+            <option value="tesseract">Google Tesseract</option>
+            <option value="granite">IBM Granite Docling</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="backend-row">
+        <span class="label">Compute backend</span>
+        <span class="choice">
+          <select id="backend" title="Select the OCR backend">
+            <option value="wasm">CPU (WASM)</option>
+            <option value="webgpu">GPU (WebGPU)</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="core-row">
+        <span class="label">Wasm core</span>
+        <span class="choice">
+          <select id="core" title="Pin the tesseract wasm build the engine runs on">
+            <option value="auto">Auto (feature-detect)</option>
+            <option value="relaxedsimd-lstm">Best speed (LSTM only, relaxed SIMD)</option>
+            <option value="simd-lstm">Compatible (LSTM only, SIMD)</option>
+            <option value="lstm">Old CPU (LSTM only, no SIMD)</option>
+            <option value="plain">Full (legacy + LSTM, no SIMD)</option>
+            <option value="relaxedsimd">Full legacy (legacy + LSTM, relaxed SIMD)</option>
+            <option value="simd">Full legacy (legacy + LSTM, SIMD)</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="accuracy-row">
+        <span class="label">OCR accuracy</span>
+        <span class="choice">
+          <select id="accuracy" title="Select the OCR accuracy">
+            <option value="3.02">Low (minimum OCR accuracy)</option>
+            <option value="4.0.0">Moderate (moderate OCR accuracy)</option>
+            <option value="4.0.0_fast">Fast (shorter OCR time)</option>
+            <option value="4.0.0_best" selected>Best (best OCR accuracy)</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="language-row">
+        <span class="label">OCR language</span>
+        <span class="choice">
+          <select id="language" title="Select the OCR language">
+            <option value="afr">Afrikaans</option>
+            <option value="ara">Arabic</option>
+            <option value="aze">Azerbaijani</option>
+            <option value="bel">Belarusian</option>
+            <option value="ben">Bengali</option>
+            <option value="bul">Bulgarian</option>
+            <option value="cat">Catalan</option>
+            <option value="ces">Czech</option>
+            <option value="chi_sim">Chinese</option>
+            <option value="chi_tra">Traditional Chinese</option>
+            <option value="chr">Cherokee</option>
+            <option value="dan">Danish</option>
+            <option value="deu">German</option>
+            <option value="ell">Greek</option>
+            <option value="eng">English</option>
+            <option value="enm">English (Old)</option>
+            <option value="epo">Esperanto</option>
+            <option value="equ">Math</option>
+            <option value="est">Estonian</option>
+            <option value="eus">Basque</option>
+            <option value="fin">Finnish</option>
+            <option value="fra">French</option>
+            <option value="frk">Frankish</option>
+            <option value="frm">French (Old)</option>
+            <option value="glg">Galician </option>
+            <option value="grc">Ancient Greek</option>
+            <option value="heb">Hebrew</option>
+            <option value="hin">Hindi</option>
+            <option value="hrv">Croatian</option>
+            <option value="hun">Hungarian</option>
+            <option value="ind">Indonesian</option>
+            <option value="isl">Icelandic</option>
+            <option value="ita">Italian</option>
+            <option value="ita_old">Italian (Old)</option>
+            <option value="jpn">Japanese</option>
+            <option value="kan">Kannada</option>
+            <option value="kor">Korean</option>
+            <option value="lav">Latvian</option>
+            <option value="lit">Lithuanian</option>
+            <option value="mal">Malayalam</option>
+            <option value="mkd">Macedonian</option>
+            <option value="mlt">Maltese</option>
+            <option value="msa">Malay</option>
+            <option value="nld">Dutch</option>
+            <option value="nor">Norwegian</option>
+            <option value="pol">Polish</option>
+            <option value="por">Portuguese</option>
+            <option value="ron">Romanian</option>
+            <option value="rus">Russian</option>
+            <option value="slk">Slovakian</option>
+            <option value="slv">Slovenian</option>
+            <option value="spa">Spanish</option>
+            <option value="spa_old">Old Spanish</option>
+            <option value="sqi">Albanian</option>
+            <option value="srp">Serbian (Latin)</option>
+            <option value="swa">Swahili</option>
+            <option value="swe">Swedish</option>
+            <option value="tam">Tamil</option>
+            <option value="tel">Telugu</option>
+            <option value="tgl">Tagalog</option>
+            <option value="tha">Thai</option>
+            <option value="tur">Turkish</option>
+            <option value="ukr">Ukrainian</option>
+            <option value="vie">Vietnamese</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="sections-row">
+        <span class="label">Result sections</span>
+        <span class="choice">
+          <select id="sections" title="Select the result surfaces to show for the active engine">
+            <option value="two">Two (text and HTML)</option>
+            <option value="one">One (text only)</option>
+            <option value="html">HTML only (text hidden)</option>
+            <option value="none">None (log lines only)</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="psm-row">
+        <span class="label">Page segmentation</span>
+        <span class="choice">
+          <select id="psm" title="Select the page segmentation mode (psm)">
+            <option value="3">Auto (full page)</option>
+            <option value="4">Single column of text</option>
+            <option value="6">Single uniform block</option>
+            <option value="7">Single text line</option>
+            <option value="8">Single word</option>
+            <option value="10">Single character</option>
+            <option value="11">Sparse text</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="spacing-row">
+        <span class="label">Preserve spaces</span>
+        <span class="choice">
+          <select id="spacing" title="Preserve the interword spaces in the output">
+            <option value="0">No (compact output)</option>
+            <option value="1">Yes (keep layout spacing)</option>
+          </select>
+        </span>
+      </div>
+      <div class="row" id="whitelist-row">
+        <span class="label">Character whitelist</span>
+        <span class="choice">
+          <input type="text" id="whitelist" placeholder="Empty = all characters (e.g. 0123456789 for digits-only)" title="Limit the recognized characters to this exact set">
+        </span>
+      </div>
+      </div>
+      <div class="group" id="grid-toggles">
+        <div class="row" id="uimode-row">
+          <span class="label">Interface style</span>
+          <span class="choice">
+            <label><input type="radio" name="uimode" value="classic" checked="checked">Classic</label>
+            <label><input type="radio" name="uimode" value="modern">Material</label>
+          </span>
+        </div>
+        <div class="row" id="layout-row">
+          <span class="label">Interface layout</span>
+          <span class="choice">
+            <label><input type="radio" name="layout" value="columns" checked="checked">Side by side</label>
+            <label><input type="radio" name="layout" value="rows">Stacked rows</label>
+          </span>
+        </div>
+        <div class="row" id="clipper-row">
+          <span class="label">Screenshot placement</span>
+          <span class="choice">
+            <label><input type="radio" name="clipper" value="page" checked="checked">Inside the app</label>
+            <label><input type="radio" name="clipper" value="window">New window</label>
+          </span>
+        </div>
+        <div class="row" id="theme-row">
+          <span class="label">Dark mode</span>
+          <span class="choice">
+            <label><input type="radio" name="theme" value="auto" checked="checked">Auto</label>
+            <label><input type="radio" name="theme" value="dark">Dark</label>
+            <label><input type="radio" name="theme" value="light">Light</label>
+          </span>
+        </div>
+        <div class="row" id="fontsize-row">
+          <span class="label">Font size</span>
+          <span class="choice">
+            <label><input type="radio" name="fontsize" value="13" checked="checked">13px</label>
+            <label><input type="radio" name="fontsize" value="14">14px</label>
+            <label><input type="radio" name="fontsize" value="15">15px</label>
+            <label><input type="radio" name="fontsize" value="16">16px</label>
+          </span>
+        </div>
+        <div class="row" id="font-row">
+          <span class="label">Font family</span>
+          <span class="choice">
+            <label><input type="radio" name="font" value="system" checked="checked">System</label>
+            <label><input type="radio" name="font" value="sans">Sans-serif</label>
+            <label><input type="radio" name="font" value="serif">Serif</label>
+            <label><input type="radio" name="font" value="mono">Monospace</label>
+          </span>
+        </div>
+        <div class="row" id="preprocess-row">
+          <span class="label">Image preparation</span>
+          <span class="choice">
+            <label class="stack">
+              <input type="checkbox" id="preprocess" title="Improve the image readability before the OCR run">
+              <span>Prepare the image before the OCR run (contrast, scale, border)</span>
+            </label>
+          </span>
+        </div>
+        <div class="row" id="streaming-row">
+          <span class="label">Result streaming</span>
+          <span class="choice">
+            <label class="stack">
+              <input type="checkbox" id="streaming" title="Stream the granite output every token, or hold it back to word boundaries">
+              <span>Stream the granite output live while it generates (default on)</span>
+            </label>
+          </span>
+        </div>
+        <div class="row" id="permission-row">
+          <span class="label">Model downloads</span>
+          <span class="choice">
+            <label class="stack">
+              <input type="checkbox" id="models" title="Allow the granite engine to download its pre-trained model">
+              <span>Allow model downloads (one-time, then cached for offline use)</span>
+            </label>
+          </span>
+        </div>
+      </div>
+      <div class="note" id="note"></div>
+    </div>
+    <input id="settings-io" type="file" accept="application/json,.json">
     <script type="text/javascript" src="vendor/tesseract.min.js"></script>
-		<script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="resources/sanitizer.js"></script>
+    <script type="text/javascript" src="index.js"></script>
   </body>
 </html>

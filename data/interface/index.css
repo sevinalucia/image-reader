@@ -1,156 +1,529 @@
+:root {
+  --ff: system-ui, sans-serif;
+  --fs: 13px;
+  --accent: #538eea;
+  --accent-hover: #4382d8;
+  --accent-down: #3167b8;
+  --line: rgba(0, 0, 0, 0.20);
+  --hover: rgba(0, 0, 0, 0.05);
+  --surface: #fbfbfb;
+  --bg: #fff;
+}
+
+html,
 body {
   border: 0;
   padding: 0;
-  width: 100%;
-  margin: auto;
-  font-family: monospace;
-}
-
-.container {
-  border: 0;
-  width: 100%;
-  margin: auto;
-  outline: none;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-.container table {
+  margin: 0;
   width: 100%;
   height: 100%;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  color: #333;
+  font-family: var(--ff);
+  font-size: var(--fs);
+  background-color: var(--bg);
+}
+
+/*  */
+.toolbar {
+  flex: none;
+  z-index: 11;
+  padding: 5px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.toolbar table {
   border-spacing: 0;
+  width: auto;
+  height: auto;
+  table-layout: fixed;
+  margin-left: auto;
 }
 
-.container table tr td {
+.toolbar table tr td {
   padding: 0;
-}
-
-.container progress {
-  border: 0;
-  color: #fff;
-  float: right;
-  height: 12px;
-  outline: none;
-  display: block;
-  font-size: 10px;
-  min-width: 150px;
-  line-height: 12px;
+  width: 42px;
+  height: 42px;
+  cursor: pointer;
+  user-select: none;
   text-align: center;
-  font-family: monospace;
-  margin: 5px 5px 0 auto;
-  transition: opacity 500ms linear;
 }
 
-.container progress[value='1'] {
-  opacity: 0.7;
+/*  */
+.toolbar table tr td svg {
+  fill: #555;
+  margin-top: -3px;
+  pointer-events: none;
+  vertical-align: middle;
+  transition: 300ms ease transform;
 }
 
-.container select {
+/* state rotations: the uimode glyph does a half-turn when the material
+   skin is active, the layout glyph lands on its 90 degrees cw stance
+   in rows mode */
+html[uimode='modern'] .toolbar table tr td#uimode svg {
+  transform: rotate(180deg);
+}
+
+html[layout='rows'] .toolbar table tr td#layout svg {
+  transform: rotate(90deg);
+}
+
+/* attribute-gated button icons: .default shows normally, .swap takes
+   over when the matching state (settings view / material skin) is on */
+.toolbar table tr td svg.swap {
+  display: none;
+}
+
+html[view='settings'] .toolbar table tr td#settings svg.default,
+html[uimode='modern'] .toolbar table tr td#uimode svg.default {
+  display: none;
+}
+
+html[view='settings'] .toolbar table tr td#settings svg.swap,
+html[uimode='modern'] .toolbar table tr td#uimode svg.swap {
+  display: inline;
+}
+
+html[theme='dark'] .toolbar table tr td#theme svg.default {
+  display: none;
+}
+
+html[theme='dark'] .toolbar table tr td#theme svg.swap {
+  display: inline;
+}
+
+.toolbar table tr td:hover {
+  background-color: var(--hover);
+}
+
+.toolbar table tr td[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* the action cluster rides the toolbar row's left side and behaves
+   exactly like the toolbar buttons: same cells, same hover, no borders */
+.toolbar .actions {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.toolbar .actions a {
   width: 100%;
-  color: #333;
-  height: 100%;
+  height: 42px;
+  display: flex;
+  max-width: 42px;
   cursor: pointer;
-  vertical-align: middle;
-  border: solid 1px rgba(0, 0, 0, 0.1);
+  min-width: 24px;
+  user-select: none;
+  align-items: center;
+  text-decoration: none;
+  justify-content: center;
+  background-color: transparent;
 }
 
-.container input[type='file'] {
-  padding: 0;
-  margin: 10px;
-  color: #333;
-  height: 100px;
+.toolbar .actions a svg {
+  fill: #555;
+  width: 13px;
+  height: 13px;
+  pointer-events: none;
+}
+
+.toolbar .actions a:hover {
+  background-color: var(--hover);
+}
+
+.toolbar .actions a[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* the copy click speaks its wait: the icon dims while the clipboard
+   write + settle run, then the base state returns */
+.toolbar .actions a.copy.pending svg {
+  opacity: 0.4;
+}
+
+/*
+  extension-only column: hidden inside the standalone webapp build
+*/
+html[context='webapp'] .toolbar td.extension {
+  display: none;
+}
+
+/*  */
+.container {
+  overflow: auto;
+  min-height: 0;
+  flex: 1;
+  border: 0;
+  width: 100%;
+  margin: 0 auto;
   outline: none;
-  font-size: 13px;
-  cursor: pointer;
-  font-weight: 600;
-  font-family: monospace;
+  padding: 0 5px 5px 5px;
   box-sizing: border-box;
-  vertical-align: middle;
-  width: calc(100% - 20px);
+}
+
+/*  */
+/* main surface two layout modes: side-by-side columns or stacked rows
+   (the layout button on the toolbar flips the html attribute) */
+.container .content {
+  gap: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.container .content .col {
+  gap: 0;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  min-height: 0;
+  flex-flow: column;
+  box-sizing: border-box;
+}
+
+html[layout='columns'] .container .content .col {
+  width: 50%;
+  /* the split drag's 10-90% clamp must stay honest: a flat 320px floor
+     beats the percentage between ~710-800px windows (the drag reports
+     a number the layout then re-clamps), so the floor yields first */
+  min-width: min(320px, 34%);
+}
+
+/* rows mode: the two column boxes flatten into one flex stack - the
+   boxes would otherwise each keep a locked 50% share, which froze the
+   result pane while the console grew across the boundary; as one
+   stack the four blocks trade heights inside a single region and the
+   console/result divider becomes a real pair */
+
+html[layout='rows'] .container .content .col {
+  display: contents;
+}
+
+html[layout='rows'] .container .content {
+  flex-flow: column;
+}
+
+/* rows mode: console shrinks a bit and the three bottom blocks
+   (console, result, render) share the remaining height equally */
+html[layout='rows'] .container .console {
+  flex: 1;
+  height: auto;
+  min-height: 100px;
+}
+
+html[layout='rows'] .container .result,
+html[layout='rows'] .container .render {
+  min-height: 100px;
+}
+
+/* columns mode: the console keeps a fixed 150px stance so the log area
+   feels generous without squeezing the file block, then scrolls - the
+   resizer stretches it past that stance by pinning the file block and
+   letting the console absorb the rest, so no cap may stand in the way
+   (a cap pooled the leftover space under the console instead) */
+
+html[layout='columns'] .container .console {
+  flex: none;
+  height: 150px;
+  min-height: 84px;
+}
+
+html[layout='columns'] .container .fileio {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+  background-size: 32px;
+}
+
+html[layout='columns'] .container input[type='file'] {
+  flex: 1;
+  height: auto;
+  min-height: 48px;
+}
+
+html[layout='columns'] .container .content .col > .separator {
+  display: none;
+}
+
+/*  */
+.container p {
+  color: #333;
+  padding: 0 5px;
+  font-size: 13px;
+  margin: 5px auto;
+  overflow: hidden;
+  white-space: normal;
 }
 
 .container button {
   color: #333;
   width: 120px;
-  height: 32px;
+  height: 48px;
   outline: none;
   cursor: pointer;
+  font-family: var(--ff);
+  padding: 5px;
   background: #fff;
   vertical-align: middle;
-  border: solid 1px rgba(0, 0, 0, 0.1);
+  border: solid 1px var(--line);
 }
 
-.container p {
+/*  */
+.container .fileio {
+  padding: 0;
+  position: relative;
+  transition: 150ms ease all;
+  border: solid 1px var(--line);
+  background: #fbfbfb url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAACk2AAApNgHc42JBAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAG1JREFUWIVj/P//PwOpwHeZ71cGBgYuNOGvm6M285BqFhPJtlMZjDpg1AGjDhh1wKgDBtwBjD5Lfb6SoQ+9IoKBb6QaxILHMHIAyWYNeBSMOoCFgYyEw0DFRMg42iQbdcCoA0YdMOqAUQcMtAMAH6AVeLZnZIgAAAAASUVORK5CYII=') no-repeat center center;
+  background-size: 16px;
+}
+
+.container .fileio .info {
+  left: 10px;
   color: #333;
-  padding: 0 10px;
+  bottom: 10px;
   font-size: 13px;
-  margin: 5px auto;
-  overflow: hidden;
-  white-space: normal;
-  font-family: monospace;
-}
-
-.container a {
-  top: 10px;
-  width: 32px;
-  color: #fff;
-  height: 32px;
-  cursor: pointer;
   user-select: none;
   position: absolute;
   text-align: center;
-  border-radius: 100%;
-  text-decoration: none;
-  font-family: monospace;
-  background-color: #4ca54c;
-  border: solid 1px rgba(0, 0, 0, 0.1);
-  transition: 300ms ease background-color;
+  pointer-events: none;
 }
 
-.container a:hover {
-  background-color: #439843;
-}
-
-.container a.copy {
-  right: 64px;
-  font-size: 16px;
-  line-height: 36px;
-}
-
-.container a.download {
-  right: 24px;
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 32px;
-}
-
-.container a.print {
-  right: 24px;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 32px;
-}
-
-.container a.pending {
-  background-color: #346534;
-}
-
-.container a:hover, 
-.container select:hover, 
-.container button:hover, 
-.container input[type='button']:hover {
-  transition: 300ms ease all;
-  border: solid 1px rgba(0, 0, 0, 0.15);
-}
-
-.container .select,
-.container .content,
-.container .consent,
-.container .console {
+.container input[type='file'] {
   padding: 0;
-  margin: 0 auto;
+  color: #333;
+  margin: 10px;
+  height: 100px;
+  outline: none;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: var(--ff);
+  box-sizing: border-box;
+  vertical-align: middle;
+  width: calc(100% - 14px);
+  transition: 150ms ease all;
 }
 
+.container .fileio.hover {
+  border: solid 1px var(--accent);
+  background-color: rgba(83, 142, 234, 0.10);
+}
+
+/*  */
+.container .console {
+  height: 120px;
+  overflow-x: hidden;
+  flex: 1;
+  min-height: 84px;
+  overflow-y: scroll;
+  border: 1px solid var(--line);
+}
+
+/*
+  console rows are single lines: the status text ellipsizes instead of
+  wrapping, and the progress state rides on the status background —
+  a green fill that grows toward the end once a real percent arrives
+*/
+.container .console > div {
+  padding: 0;
+  color: #333;
+  margin: 5px;
+  min-height: 24px;
+  font-size: 13px;
+  overflow: hidden;
+  text-indent: 5px;
+  line-height: 24px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  box-sizing: border-box;
+  font-family: monospace;
+  background-color: var(--surface);
+  border: solid 1px rgba(0, 0, 0, 0.05);
+}
+
+/*  */
+.container .console .status {
+  height: 100%;
+  flex: auto;
+  min-width: 0;
+  order: 1;
+  font-size: 13px;
+  overflow: hidden;
+  line-height: 22px;
+  white-space: nowrap;
+  font-family: monospace;
+  text-overflow: ellipsis;
+}
+
+/*
+  the fill and shimmer live on the status itself: a real percent grows
+  the low-alpha green toward the end, silent phases sweep a stripe
+  until numbers land — the alpha keeps row text readable in both themes
+*/
+.container .console .status[data-progress] {
+  background-repeat: no-repeat;
+  background-size: var(--fill, 0%) 100%;
+  background-image: linear-gradient(rgba(76, 175, 80, 0.30), rgba(76, 175, 80, 0.30));
+  transition: background-size 200ms linear;
+}
+
+.container .console .status[data-shimmer] {
+  background-size: 45% 100%;
+  background-repeat: no-repeat;
+  animation: statusshimmer 1.4s linear infinite;
+  background-image: linear-gradient(90deg, rgba(76, 175, 80, 0), rgba(76, 175, 80, 0.30), rgba(76, 175, 80, 0.30), rgba(76, 175, 80, 0));
+}
+
+@keyframes statusshimmer {
+  from {
+    background-position: -82% 0;
+  }
+  to {
+    background-position: 182% 0;
+  }
+}
+
+.container .console .status[done] {
+  font-weight: 600;
+}
+
+/*  */
+.container .result {
+  display: flex;
+  flex: 1;
+  min-height: 160px;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+}
+
+/* the 64px watermark lives in a pseudo layer so the OCR text never
+   paints over it — it shows only while the result textarea is empty */
+.container .result::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../icons/64.png') no-repeat 50% 50%;
+  background-size: 64px;
+  pointer-events: none;
+}
+
+/* the watermark hides through a JS-maintained attribute on the result
+   note: "textarea:empty" can't see the DOM value property, and a label
+   text node is never added, so the attribute gate is the reliable one */
+.container .result[filled]::before {
+  display: none;
+}
+
+.container .result textarea {
+  margin: 0;
+  border: 0;
+  width: 100%;
+  color: #000;
+  height: 100%;
+  padding: 5px;
+  outline: none;
+  font-size: var(--fs);
+  line-height: 1.7;
+  overflow-y: scroll;
+  font-family: monospace;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+
+.container .render {
+  display: none;
+  flex: 1;
+  min-height: 180px;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+}
+
+.container .render iframe {
+  border: 0;
+  width: 100%;
+  padding: 0;
+  margin: auto;
+  height: 100%;
+  background: #fff;
+}
+
+/* the pane shows only once content lands - the display gate rides
+   the render attribute, so no empty white panel ever exists */
+html[render='on'] .container .render {
+  display: flex;
+}
+
+html[engine='tesseract']:not([render='on']) .separator.last {
+  display: none;
+}
+
+/*  */
+.container .clipper {
+  display: none;
+  flex: 1;
+  min-height: 220px;
+  border: 1px solid var(--line);
+}
+
+html[clipper='on'] .container .clipper {
+  display: flex;
+}
+
+html[clipper='on'] .container .clipper iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* the clipper owns the right column while it is open: the idle
+   result surfaces step aside until the capture hands off */
+html[clipper='on'] .container .result,
+html[clipper='on'] .container .render {
+  display: none;
+}
+
+html[clipper='on'] .container .col.right .separator {
+  display: none;
+}
+
+/* separator rows breathe with the same 5px rhythm as every other
+   gap in the UI */
+.container .separator {
+  border: 0;
+  padding: 5px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.container .separator svg {
+  fill: var(--accent);
+  pointer-events: none;
+  vertical-align: middle;
+}
+
+/*  */
 .container .consent {
   left: 0;
   margin: 0;
@@ -167,7 +540,7 @@ body {
 
 .container .consent p {
   color: #fff;
-  padding: 10px;
+  padding: 5px;
   font-weight: 600;
 }
 
@@ -177,318 +550,260 @@ body {
   margin-top: 0;
   max-width: 350px;
   font-weight: 600;
-  margin: 5px auto 15px auto;
+  margin: 5px auto 10px auto;
 }
 
-.container .fileio {
-  padding: 0;
-  position: relative;
-  border: solid 1px rgba(0, 0, 0, 0.20);
-  background: #fbfbfb url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAACk2AAApNgHc42JBAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAG1JREFUWIVj/P//PwOpwHeZ71cGBgYuNOGvm6M285BqFhPJtlMZjDpg1AGjDhh1wKgDBtwBjD5Lfb6SoQ+9IoKBb6QaxILHMHIAyWYNeBSMOoCFgYyEw0DFRMg42iQbdcCoA0YdMOqAUQcMtAMAH6AVeLZnZIgAAAAASUVORK5CYII=') no-repeat center center;
-  background-size: 22px;
-}
-
-.container .fileio .info {
-  left: 10px;
-  color: #333;
-  bottom: 10px;
-  font-size: 13px;
-  user-select: none;
-  position: absolute;
-  text-align: center;
-  pointer-events: none;
-  font-family: monospace;
-}
-
-.container .content table {
-  border-spacing: 1px 0;
-}
-
-.container .console {
-  height: 120px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  border: 1px solid rgba(0, 0, 0, 0.20);
-}
-
-.container .console > div {
-  padding: 0;
-  color: #333;
-  margin: 3px;
-  height: 24px;
-  font-size: 13px;
-  overflow: hidden;
-  text-indent: 5px;
-  line-height: 24px;
-  white-space: nowrap;
-  text-align: justify;
+/*  */
+.settings {
+  flex: 1;
+  gap: 20px;
+  display: none;
+  min-height: 0;
+  padding: 0 10px;
+  overflow-y: auto;
+  flex-flow: row wrap;
   box-sizing: border-box;
-  font-family: monospace;
-  background-color: #fbfbfb;
-  border: solid 1px rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  align-content: flex-start;
 }
 
-.container .status {
-  height: 100%;
-  font-size: 13px;
-  overflow: hidden;
-  line-height: 22px;
-  white-space: nowrap;
-  display: inline-block;
-  font-family: monospace;
-  text-overflow: ellipsis;
-  width: calc(100% - 10px);
+/* the two selectors columns: the wrap width breaks into one
+   column on narrow windows exactly like the old single flow */
+.settings .group {
+  gap: 0;
+  display: flex;
+  flex-flow: column;
+  flex: 1 calc(50% - 10px);
+  container-type: inline-size;
 }
 
-.container .status[done] {
+/* narrow column: the stacked options read one per line, all
+   snug to the right edge like a tidy form */
+@container (max-width: 400px) {
+  .settings .row .choice {
+    gap: 10px;
+    flex-flow: column;
+    align-items: flex-end;
+  }
+}
+
+.settings .row {
+  gap: 5px;
+  flex: none;
+  padding: 0;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.settings .row .label {
+  flex: none;
+  min-width: 140px;
   font-weight: 600;
 }
 
-.container .result {
-  display: flex;
-  height: 300px;
-  overflow: hidden;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.20);
-  background: #fff url('../icons/64.png') no-repeat 50% 50%;
-  background-size: 64px;
-}
-
-.container .result textarea {
-  margin: 0;
-  border: 0;
-  width: 100%;
-  color: #000;
-  height: 100%;
-  padding: 10px;
-  outline: none;
-  font-size: 14px;
-  line-height: 1.7;
-  overflow-y: scroll;
-  font-family: monospace;
-  box-sizing: border-box;
-  background-color: transparent;
-}
-
-.container .render {
-  display: flex;
-  min-height: 300px;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 840px);
-  border: 1px solid rgba(0, 0, 0, 0.20);
-}
-
-.container .render iframe {
-  border: 0;
-  width: 100%;
+.settings .row .choice {
+  gap: 0;
+  flex: 1;
   padding: 0;
-  margin: auto;
-  height: 100%;
-  background: #fff;
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
-.container .select {
-  height: 48px;
+.settings .row .choice label {
+  gap: 0;
+  padding: 5px 0;
+  cursor: pointer;
+  min-width: 115px;
+  align-items: center;
+  white-space: nowrap;
+  display: inline-flex;
+  flex-flow: row-reverse;
 }
 
-.container .select table {
-  table-layout: fixed;
+.settings .row .choice input[type='radio'],
+.settings .row .choice input[type='checkbox'] {
+  margin: 5px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
-.container .select select {
-  margin: 0;
+.settings .row .choice input[type='radio'] {
+  margin-top: 8px;
+}
+
+.settings .row .choice input[type='checkbox'] {
+  margin-left: 8px;
+}
+
+.settings .row .choice select {
+  flex: 1;
+  width: 100%;
   color: #333;
-  height: 48px;
-  outline: none;
-  font-size: 13px;
+  height: 38px;
+  cursor: pointer;
+  max-width: 350px;
+  font-weight: 600;
   appearance: none;
-  font-weight: 600;
   user-select: none;
   white-space: nowrap;
-  background-size: 8px;
+  font-size: var(--fs);
   padding: 0 28px 0 10px;
   box-sizing: border-box;
-  font-family: monospace;
-  width: calc(100% - 2px);
   text-overflow: ellipsis;
-  background-color: #fbfbfb;
   overflow: hidden !important;
-  border: 1px solid rgba(0, 0, 0, 0.20);
+  border: solid 1px var(--line);
+  background-color: var(--surface);
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAACxMAAAsTAQCanBgAAAHWSURBVFhH7ZY/TsMwFMZjZ0QM3KCiMEXiCnCDqv9WpooToIqt6sgZ6ITYWtELAEIsDDCjdkBwARATA1Vivs+JqzSyoaVtFvJJr7bfs/Pzv5fGK1SoUKfTkUmVpUhM+/KIiUajUUblMAzDPaXUhg55noJxkCnTWjomhPj0ff8ezEtRr9fbcJzqLjkriqITbsNW3MxfWPimxM9X0s5dYIdyMplcYCtuEl9uAvMWxbk/Ho/fgyB4hCPAjEpxeL0iXErZGgwGL7LZbPqoPOFGHiWzWqvScDSVSRVeRlWtVsvYhR467Mfu1SoLp8+HaTgbo9HoA8dxh/fB3qqPwwaHxBQOcTcigF9hrVUehw2ON2LMw4+xiPeh3++HqEscxzYmcoaBB2j/Wa6VwzRPv49Nw8BhajgcPi97MX9aueHxDqgsHEYJpOgb7sQDHrRwirrg3W53ZrE6DW1wmO6IByycovPCGSOIssLTHedN0UXgjBH2K5wBSOKvu4QU7WEi1otpg0POZ3Jic8NhIcDOFHWtnCEXnLvCutkFjx1ZQmzTT9O+dAzHsYPviCvsiKLVarXr5MMmPc75TMBnYrphnNC0Y1K3xiqVyi6gx7B2Fm7628ZlfIUK/Xt53jf1c2EfTV8yvgAAAABJRU5ErkJggg==');
-  background-position: right 10px top 50%, 0 0;
-  background-repeat: no-repeat, repeat;
+  background-position: right 10px top 50%;
+  background-repeat: no-repeat;
+  background-size: 8px;
 }
 
-.selector[disabled],
-.container .select select[disabled] {
+.settings .row .choice select[disabled],
+.settings .row .choice input[disabled] {
   opacity: 0.5;
   pointer-events: none;
 }
 
-.container .separator {
-  border: 0;
-  padding: 20px;
-  text-align: center;
+/*
+  the free-text whitelist input mirrors the select look
+*/
+
+.settings .row .choice input[type='text'] {
+  flex: 1;
+  width: 100%;
+  color: #333;
+  height: 38px;
+  cursor: text;
+  padding: 0 10px;
+  max-width: 350px;
+  font-weight: 600;
+  font-size: var(--fs);
+  white-space: nowrap;
   box-sizing: border-box;
+  border: solid 1px var(--line);
+  background-color: var(--surface);
 }
 
-.container .separator svg {
-  fill: #4ca54c;
-  pointer-events: none;
-  vertical-align: middle;
-}
-
-.container #language {
-  margin-left: 2px
-}
-
-.toolbar {
-  top: 11px;
-  right: 11px;
-  z-index: 11;
-  position: absolute;
-}
-
-.toolbar table {
-  width: auto;
-  height: 100%;
-  border-spacing: 0;
-  table-layout: fixed;
-}
-
-.toolbar table tr td {
-  padding: 0;
-  width: 42px;
-  height: 40px;
-  cursor: pointer;
-  user-select: none;
-  text-align: center;
-}
-
-.toolbar table tr td svg {
-  fill: #555;
-  pointer-events: none;
-  vertical-align: middle;
-}
-
-.toolbar table tr td:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.theme, .selector {
-  top: 139px;
-  z-index: 11;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  cursor: pointer;
-  position: absolute;
+.settings .stack {
+  display: inline-flex;
+  gap: 5px;
+  max-width: 420px;
   align-items: center;
-  background-color: #fff;
-  justify-content: center;
+}
+
+.settings .note {
+  flex: none;
+  min-height: 20px;
+  color: #777;
+  padding: 5px 0;
+  font-size: var(--fs);
+  position: sticky;
+  bottom: 0;
+}
+
+/*  */
+html[view='settings'] .container {
+  display: none;
+}
+
+html[view='settings'] .settings {
+  display: flex;
+}
+
+/*
+  the text pane drops from the view for the html / none modes: the
+  textarea still receives the text for copy / download / print
+*/
+html[sections='html'] .container .result,
+html[sections='none'] .container .result {
+  display: none;
+}
+
+/* the draggable dividers resize the stacked panes (a thin hover strip
+   with a directional cursor); the split variant between the two
+   columns swaps to a horizontal grip in columns mode */
+.container .resizer {
+  flex: none;
+  width: 100%;
+  height: 4px;
+  margin: 1px 0;
+  cursor: ns-resize;
+  user-select: none;
+  touch-action: none;
+  box-sizing: border-box;
   transition: 300ms ease background-color;
 }
 
-.theme {
-  right: 10px;
+.container .resizer:hover,
+.container .resizer[drag] {
+  background-color: rgba(83, 142, 234, 0.35);
 }
 
-.selector {
-  left: 10px;
+html[layout='columns'] .container .content > .resizer.split {
+  width: 4px;
+  height: auto;
+  margin: 0 1px;
+  cursor: ew-resize;
+  align-self: stretch;
 }
 
-.theme svg, .selector svg {
-  fill: #555;
-  pointer-events: none;
-  vertical-align: middle;
-}
-
-.theme:hover, .selector:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-@media (max-width: 300px) {
-  .toolbar {
-    display: none;
-  }
-}
-
-html[context='webapp'] .toolbar {
+/* rows mode drags ride the existing separators: no extra strip in the
+   stacked view, so the visible dividers own the cursor + hover tint */
+html[layout='rows'] .container .resizer {
   display: none;
 }
 
-html[engine='tesseract'] .container .render,
-html[engine='tesseract'] table tr td:has(#backend),
-html[engine='tesseract'] .container .separator.last {
+html[layout='rows'] .container .separator {
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+html[layout='rows'] .container .separator:hover,
+html[layout='rows'] .container .separator[drag] {
+  background-color: rgba(83, 142, 234, 0.35);
+}
+
+/*  */
+/* the engine attribute gates which compute rows make sense; the
+   preprocess pass only feeds the tesseract branch and the model
+   permission only guards granite, so each hides on the other */
+
+html[engine='tesseract'] #backend-row,
+html[engine='tesseract'] #permission-row,
+html[engine='tesseract'] #streaming-row {
   display: none;
 }
 
-html[engine='tesseract'] .container .result {
-  height: calc(100vh - 482px);
-}
-
-html[engine='granite'] table tr td:has(#language),
-html[engine='granite'] table tr td:has(#accuracy) {
+html[engine='granite'] #psm-row,
+html[engine='granite'] #core-row,
+html[engine='granite'] #spacing-row,
+html[engine='granite'] #accuracy-row,
+html[engine='granite'] #language-row,
+html[engine='granite'] #whitelist-row,
+html[engine='granite'] #preprocess-row {
   display: none;
 }
 
-html[theme='dark'], 
-html[theme='dark'] body {
-  color: #ebebeb;
-  color-scheme: dark;
-  background-color: #1e1e1e;
+/*
+  imports read nothing from remote — the hidden picker lives offscreen
+*/
+
+#settings-io {
+  display: none;
 }
 
-html[theme='dark'] .container .console > div {
-  color: #ebebeb;
-  background-color: rgb(255 255 255 / 10%);
-}
-
-html[theme='dark'] .container .fileio,
-html[theme='dark'] .container .select select {
-  color: #ebebeb;
-  background-color: #1a1a1a;
-}
-
-html[theme='dark'] .theme:hover,
-html[theme='dark'] .selector:hover,
-html[theme='dark'] .toolbar table tr td:hover {
-  background-color: rgb(255 255 255 / 5%);
-}
-
-html[theme='dark'] .theme,
-html[theme='dark'] .selector,
-html[theme='dark'] .container .result,
-html[theme='dark'] .container .console,
-html[theme='dark'] .container .render iframe {
-  background-color: #1e1e1e;
-}
-
-html[theme='dark'] .container .console > div {
-  border-color: rgb(255 255 255 / 10%);
-}
-
-html[theme='dark'] .container a,
-html[theme='dark'] .container .render,
-html[theme='dark'] .container .fileio,
-html[theme='dark'] .container .result,
-html[theme='dark'] .container .console,
-html[theme='dark'] .container .select select {
-  border-color: rgb(255 255 255 / 35%);
-}
-
-html[theme='dark'] .container .fileio .info,
-html[theme='dark'] .container .result textarea,
-html[theme='dark'] .container input[type='file'] {
-  color: #ebebeb;
-}
-
-html[theme='dark'] .theme svg,
-html[theme='dark'] .selector svg,
-html[theme='dark'] .toolbar table tr td svg {
-  fill: #ebebeb;
+.container button:hover,
+.settings .row .choice select:hover,
+.container .fileio:hover {
+  border: solid 1px rgba(0, 0, 0, 0.25);
 }

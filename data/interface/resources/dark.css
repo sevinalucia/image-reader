@@ -1,0 +1,105 @@
+/* ============================================================================
+   dark.css — dark theme leg (loaded LAST so manual toggles always win).
+   The html[theme='dark'] attribute is set by the theme button in every
+   surface; fresh installs without a stored choice follow the OS theme.
+   ============================================================================ */
+
+html[theme='dark'][uimode='classic'],
+html[theme='dark'][uimode='classic'] body {
+  color: #ebebeb;
+  color-scheme: dark;
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'][uimode='classic'] .container p,
+html[theme='dark'][uimode='classic'] .container input[type='file'] {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='classic'] .container .console > div {
+  color: #ebebeb;
+  background-color: rgb(255 255 255 / 10%);
+}
+
+html[theme='dark'][uimode='classic'] .container .fileio {
+  color: #ebebeb;
+  background-color: #1a1a1a;
+}
+
+html[theme='dark'][uimode='classic'] .toolbar table tr td:hover,
+html[theme='dark'][uimode='classic'] .toolbar .actions a:hover,
+html[theme='dark'][uimode='classic'] .container .fileio.hover {
+  background-color: rgb(255 255 255 / 5%);
+}
+
+html[theme='dark'][uimode='classic'] .container .result,
+html[theme='dark'][uimode='classic'] .container .render iframe {
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'][uimode='classic'] .container .console > div {
+  border-color: rgb(255 255 255 / 10%);
+}
+
+html[theme='dark'][uimode='classic'] .container a,
+html[theme='dark'][uimode='classic'] .container .render,
+html[theme='dark'][uimode='classic'] .container .fileio,
+html[theme='dark'][uimode='classic'] .container .result,
+html[theme='dark'][uimode='classic'] .container .console,
+html[theme='dark'][uimode='classic'] .container button,
+html[theme='dark'][uimode='classic'] .settings .row .choice select {
+  border-color: rgb(255 255 255 / 35%);
+}
+
+html[theme='dark'][uimode='classic'] .container .fileio .info {
+  color: #9b9b9b;
+}
+
+html[theme='dark'][uimode='classic'] .container .result textarea {
+  color: #ebebeb;
+}
+
+html[theme='dark'][uimode='classic'] .toolbar table tr td svg,
+html[theme='dark'][uimode='classic'] .toolbar .actions a svg {
+  fill: #ebebeb;
+}
+
+html[theme='dark'][uimode='classic'] .container button {
+  color: #ebebeb;
+  background-color: #1e1e1e;
+}
+
+html[theme='dark'][uimode='classic'] .settings .row {
+  border-bottom-color: rgb(255 255 255 / 10%);
+}
+
+html[theme='dark'][uimode='classic'] .settings .row .choice select {
+  color: #ebebeb;
+  background-color: #1a1a1a;
+  /* the classic skin paints its chevron as a dark png: on the dark
+     select surface it vanishes, so a light arrow rides here */
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 5.5l5 5 5-5' fill='none' stroke='%23d0d0d0' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-position: right 10px top 50%;
+  background-repeat: no-repeat;
+  background-size: 8px;
+}
+
+/*
+  the whitelist box sits beside the selects - it gets the same mirror
+*/
+html[theme='dark'][uimode='classic'] .settings .row .choice input[type='text'] {
+  color: #ebebeb;
+  background-color: #1a1a1a;
+  border-color: rgb(255 255 255 / 35%);
+}
+
+html[theme='dark'][uimode='classic'] .settings .note {
+  color: #999;
+}
+
+/* compact alternative for the pinned highlight pair; the modern skin
+   keeps its accent hover, so the override pins to classic only */
+html[theme='dark'][uimode='classic'] .container .fileio.hover {
+  border-color: rgb(255 255 255 / 35%);
+}
+

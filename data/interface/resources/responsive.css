@@ -1,0 +1,148 @@
+/* ============================================================================
+   responsive.css — geometry-only media queries (loaded after index.css,
+   before the skins; no color rules live here)
+   ============================================================================ */
+
+@media (max-width: 1100px) {
+  .settings .row .choice label span {
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+/* below ~900px the settings rows wrap instead of staying on one
+   line (the desktop row heights would clip the wrapped controls);
+   the columns themselves stay side by side on every width - only the
+   minimum column width gives up its 320px desktop stance so both
+   columns still fit */
+
+@media (max-width: 900px) {
+  .settings .row {
+    height: auto;
+    flex-flow: wrap;
+    line-height: normal;
+  }
+
+  .settings .row .label {
+    min-width: 0;
+  }
+
+  .settings .row .choice select,
+  .settings .row .choice input[type='text'] {
+    height: 32px;
+    max-width: 250px;
+    line-height: 32px;
+  }
+
+  .settings .row .choice label span {
+    max-width: 200px;
+  }
+}
+
+/* very narrow: the two settings columns give up their 340px minimum
+   so stacked groups fill the small window without horizontal scroll */
+
+@media (max-width: 800px) {
+  .container .content .col,
+  html[layout='columns'] .container .content .col {
+    min-width: 168px;
+  }
+
+  .settings .row .choice select,
+  .settings .row .choice input[type='text'] {
+    max-width: 150px;
+  }
+
+  .settings .row .choice label span {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 700px) {
+  .settings .note {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings .row .choice select,
+  .settings .row .choice input[type='text'] {
+    max-width: 100px;
+  }
+
+  .settings .row .choice label span {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 500px) {
+  .settings .group {
+    flex: 1 100%;
+    min-width: 100%;
+  }
+}
+
+/* ultra-narrow: the cancel anchor keeps its slot (a stuck run must
+   stay abortable); every other text/data action and the extension
+   column step aside — the theme/settings/reset cells stay too */
+
+@media (max-width: 400px) {
+  .container {
+    padding-top: 5px;
+  }
+
+  /* the no-wrap toolbar min-content sum (~420px = 9 tds + cancel)
+     overflows the window: wrapping lets the tail drop to a second
+     row instead of scrolling sideways */
+
+  .toolbar {
+    padding: 0;
+  }
+
+  .toolbar td.extension:not(#reload),
+  .toolbar .actions a:not(.cancel) {
+    display: none;
+  }
+}
+
+/* compact screens: the stacked layout shares its remaining height
+   across the three bottom blocks, so the relief lowers their
+   min-heights; the columns layout keeps its 150px console stance and
+   relieves through the drag ceilings instead */
+
+@media (max-height: 800px) {
+  html[layout='rows'] .container .console,
+  html[layout='rows'] .container .result,
+  html[layout='rows'] .container .render {
+    min-height: 78px;
+  }
+
+  html[layout='rows'] .container .fileio input[type='file'] {
+    height: 78px;
+  }
+}
+
+/* the real floor: two 168px columns + their gap overflow below ~346px,
+   so the content stacks like the rows layout before it can scroll */
+
+@media (max-width: 360px) {
+  html[layout='columns'] .container .content {
+    flex-flow: column;
+  }
+
+  html[layout='columns'] .container .content .resizer.split {
+    display: none;
+  }
+}
+
+/* the divider drags write inline heights 60 times a second: the 150ms
+   pan(e) transitions would lag each step behind the instant flex
+   peers and let the file block paint out of its box mid-drag */
+
+html[dragging] .container .fileio,
+html[dragging] .container input[type='file'] {
+  transition: none;
+}
+
